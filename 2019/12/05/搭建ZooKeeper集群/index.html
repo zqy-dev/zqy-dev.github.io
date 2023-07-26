@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>搭建ZooKeeper集群 | qyblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="服务器搭建ZooKeeper集群 jdk下载   下载完成后解压tar包1tar -zxvf jdk.tar -C 解压到指定目录 配置环境变量1234echo &amp;#x27;export JAVA_HOME&#x3D;jdk解压路径&amp;#x27; | sudo tee -a &#x2F;etc&#x2F;profileecho &amp;#x27;export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin&amp;#x27; | su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建ZooKeeper集群">
+<meta property="og:url" content="http://example.com/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name" content="qyblog">
+<meta property="og:description" content="服务器搭建ZooKeeper集群 jdk下载   下载完成后解压tar包1tar -zxvf jdk.tar -C 解压到指定目录 配置环境变量1234echo &amp;#x27;export JAVA_HOME&#x3D;jdk解压路径&amp;#x27; | sudo tee -a &#x2F;etc&#x2F;profileecho &amp;#x27;export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin&amp;#x27; | su">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-05T04:09:25.000Z">
+<meta property="article:modified_time" content="2023-07-26T06:17:22.227Z">
+<meta property="article:author" content="King Qiuyu">
+<meta property="article:tag" content="环境搭建">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="qyblog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">qyblog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">King Qiuyu</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-搭建ZooKeeper集群" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/" class="article-date">
+  <time class="dt-published" datetime="2019-12-05T04:09:25.000Z" itemprop="datePublished">2019-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      搭建ZooKeeper集群
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <span id="more"></span>
+
+<h2 id="服务器搭建ZooKeeper集群"><a href="#服务器搭建ZooKeeper集群" class="headerlink" title="服务器搭建ZooKeeper集群"></a>服务器搭建ZooKeeper集群</h2><ol>
+<li><strong><a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"><font color="#1A5276" >jdk下载</font><br/></a></strong></li>
+</ol>
+<ul>
+<li>下载完成后解压tar包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk.tar -C 解压到指定目录</span><br></pre></td></tr></table></figure></li>
+<li>配置环境变量<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export JAVA_HOME=jdk解压路径&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export PATH=$PATH:$JAVA_HOME/bin&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/bin&#x27; | sudo tee -a /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><strong>创建ZooKeeper用户组</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd zookeeper</span><br><span class="line">sudo useradd zookeeper -g zookeeper</span><br></pre></td></tr></table></figure></li>
+<li><strong><a target="_blank" rel="noopener" href="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.12/"><font color="#1A5276" >ZooKeeper下载</font><br/></a></strong></li>
+</ol>
+<ul>
+<li>下载完之后解压安装包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.12.tar.gz -C 解压指定目录</span><br></pre></td></tr></table></figure></li>
+<li>配置环境变量<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export ZOOKEEPER_HOME=zookeeper解压路径&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export PATH=$PATH:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf&#x27; | sudo tee -a /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></li>
+<li>修改ZooKeePer解压的目录所属用户组<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown zookeeper:zookeeper -R zookeeper-3.4.12</span><br></pre></td></tr></table></figure></li>
+<li>复制示例配置文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure></li>
+<li>修改配置信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ticketTime=2000</span><br><span class="line">initLimit=10</span><br><span class="line">syncLimit=5</span><br><span class="line"># 数据路径</span><br><span class="line">dataDir=/zookeeper-3.4.12/data</span><br><span class="line"># 日志路径</span><br><span class="line">dataLogDir=/zookeeper-3.4.12/logs</span><br><span class="line">clientPort=2181</span><br><span class="line"># cluster info</span><br><span class="line">server.1=node151:2888:3888</span><br><span class="line">server.2=node152:2888:3888</span><br><span class="line">server.3=node153:2888:3888</span><br></pre></td></tr></table></figure></li>
+<li>创建数据目录,日志目录<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper mkdir  data</span><br><span class="line">sudo -u zookeeper mkdir logs</span><br></pre></td></tr></table></figure></li>
+<li>修改bin目录项zkEnv.sh命令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim vim /zookeeper-3.4.12/bin/zkEnv.sh</span><br><span class="line">修改内容:</span><br><span class="line">ZOO_LOG_DIR=&quot;/zookeeper-3.4.12/logs&quot;</span><br></pre></td></tr></table></figure></li>
+<li>创建myid文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">touck /zookeeper-3.4.12/data/myid</span><br><span class="line">填入内容与zoo.cfg文件中server编号一致</span><br><span class="line">echo &quot;1&quot; &gt; myid</span><br></pre></td></tr></table></figure></li>
+<li>复制到另外俩太机器上一次修改myid文件内容<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;2&quot; &gt; myid</span><br><span class="line">echo &quot;3&quot; &gt; myid</span><br></pre></td></tr></table></figure></li>
+<li>配置hosts<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip node151</span><br><span class="line">ip node152</span><br><span class="line">ip node153</span><br></pre></td></tr></table></figure></li>
+<li>启动ZooKeeper集群<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh start</span><br></pre></td></tr></table></figure></li>
+<li>查看启动状态<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh status</span><br></pre></td></tr></table></figure></li>
+<li>停止集群<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh stop</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li><strong><font color="#E74C3C">如果查看状态报错:Error contacting service. It is probably not running.</font><br/></strong><ol>
+<li>说明zkEnv.sh命令内容没有修改日志路径</li>
+<li>查看服务器防火墙是否关闭</li>
+<li>查看配置文件是否配置成功</li>
+<li>查看host是否配置成功</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/" data-id="clkjg3cvd000i3es6009fafvl" data-title="搭建ZooKeeper集群" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          搭建MySql
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Redis过期策略与淘汰策略</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" rel="tag">java基础篇</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" style="font-size: 10px;">java基础篇</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" style="font-size: 20px;">环境搭建</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/">搭建MySql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/">搭建ZooKeeper集群</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">Redis过期策略与淘汰策略</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Linux常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/">ElasticSearch常用的DSLhexo脚本</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 King Qiuyu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

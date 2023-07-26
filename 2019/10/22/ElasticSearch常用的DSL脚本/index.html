@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ElasticSearch常用的DSLhexo脚本 | qyblog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="ElasticSearch常用的DSL脚本 以下所有脚本执行都是使用ElasticSearch可视化工具ElasticSearch-head执行的,如果没有安装可以查看搭建ElasticSearch  新建索引1234567891011121314151617181920212223put http:&#x2F;&#x2F;localhost:9200&#x2F;my_index_v1    &amp;#123;      &amp;qu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch常用的DSLhexo脚本">
+<meta property="og:url" content="http://example.com/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/index.html">
+<meta property="og:site_name" content="qyblog">
+<meta property="og:description" content="ElasticSearch常用的DSL脚本 以下所有脚本执行都是使用ElasticSearch可视化工具ElasticSearch-head执行的,如果没有安装可以查看搭建ElasticSearch  新建索引1234567891011121314151617181920212223put http:&#x2F;&#x2F;localhost:9200&#x2F;my_index_v1    &amp;#123;      &amp;qu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png">
+<meta property="og:image" content="http://example.com/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png">
+<meta property="og:image" content="http://example.com/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png">
+<meta property="og:image" content="http://example.com/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png">
+<meta property="og:image" content="http://example.com/match_all.png">
+<meta property="og:image" content="http://example.com/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png">
+<meta property="article:published_time" content="2019-10-22T12:11:57.000Z">
+<meta property="article:modified_time" content="2023-07-26T08:01:54.942Z">
+<meta property="article:author" content="King Qiuyu">
+<meta property="article:tag" content="es">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png">
+  
+    <link rel="alternate" href="/atom.xml" title="qyblog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">qyblog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">King Qiuyu</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ElasticSearch常用的DSL脚本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/" class="article-date">
+  <time class="dt-published" datetime="2019-10-22T12:11:57.000Z" itemprop="datePublished">2019-10-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ElasticSearch常用的DSLhexo脚本
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <!--more!-->
+
+<h1 id="ElasticSearch常用的DSL脚本"><a href="#ElasticSearch常用的DSL脚本" class="headerlink" title="ElasticSearch常用的DSL脚本"></a>ElasticSearch常用的DSL脚本</h1><ul>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用ElasticSearch可视化工具ElasticSearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建ElasticSearch</a></strong></li>
+</ul>
+<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &#123;</span><br><span class="line">          &quot;refresh_interval&quot;: &quot;60s&quot;,</span><br><span class="line">          &quot;number_of_shards&quot;: &quot;10&quot;,</span><br><span class="line">          &quot;number_of_replicas&quot;: &quot;1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;my_index&quot;: &#123;</span><br><span class="line">          &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;gender&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加成功</strong><br><img src="/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
+<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_alias/my_index</span><br></pre></td></tr></table></figure>
+<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get http://localhost:9200/my_index_v1/_alias/</span><br></pre></td></tr></table></figure>
+<p><strong>查询结果如图所示</strong><br><img src="/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
+<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get http://localhost:9200/_alias/my_index</span><br></pre></td></tr></table></figure>
+
+<p>##ElasticSearch添加索引别名的好处以及操作</p>
+<ul>
+<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
+<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
+<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
+<li>给多个索引分组。</li>
+<li>给索引的一个子集创建视图。</li>
+</ol>
+</li>
+<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>  *. ElasticSearch索引别名管理支持单个索引操作也支持多个索引操作<br>  1. 单个索引操作: _alias<br>  2. 多个索引操作: _aliases<ul>
+<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost/_aliases/</span><br><span class="line">&#123;</span><br><span class="line">  &quot;actions&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;remove&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;my_index_v1&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;my_index&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;add&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;my_index_v2&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;my_index&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果所示增加成功</strong><br><img src="/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
+<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;dynamic_date_formats&quot;: [</span><br><span class="line">    &quot;yyyy-MM-dd&quot;,</span><br><span class="line">    &quot;yyyy-MM-ddHH: mm: ss&quot;,</span><br><span class="line">    &quot;yy-MM-ddHH: mm: ss&quot;,</span><br><span class="line">    &quot;date_optional_time&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;createTime&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;long&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;updateTime&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;long&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><font color=#FF5733></font><br /></strong></p>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/my_index</span><br><span class="line"> &#123;</span><br><span class="line">   &quot;name&quot;: &quot;zhangsan&quot;,</span><br><span class="line">   &quot;gender&quot;: &quot;male&quot;,</span><br><span class="line">   &quot;age&quot;: 20</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加数据成功</strong><br><img src="/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
+<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/match_all.png"></p>
+<ol>
+<li>took:表示查询执行时长(单位是毫秒)</li>
+<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
+<li>_shards:分片的详情</li>
+<li>hits:查询的数据详情</li>
+<li>total:查询到的总数</li>
+</ol>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
+<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,ElasticSearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
+</ul>
+<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;zhangsan&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/" data-id="clkjg3cv600013es6fs45g5y6" data-title="ElasticSearch常用的DSLhexo脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es/" rel="tag">es</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Linux常用命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">搭建ElasticSearch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" rel="tag">java基础篇</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" style="font-size: 10px;">java基础篇</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" style="font-size: 20px;">环境搭建</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/">搭建MySql</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/">搭建ZooKeeper集群</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">Redis过期策略与淘汰策略</a>
+          </li>
+        
+          <li>
+            <a href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Linux常用命令</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/">ElasticSearch常用的DSLhexo脚本</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 King Qiuyu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
