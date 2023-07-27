@@ -99,7 +99,7 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -113,7 +113,7 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -203,7 +203,7 @@
                 <!--more!-->
 
 <h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch">搭建Elasticsearch</a></strong></li>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
 </ul>
 <h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>

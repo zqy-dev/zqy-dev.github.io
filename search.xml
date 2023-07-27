@@ -1,53 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Linux常用命令</title>
-    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <title>Redis过期策略与淘汰策略</title>
+    <url>/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</url>
     <content><![CDATA[<span id="more"></span>
 
-<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
-<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
+<h2 id="Redis过期策略"><a href="#Redis过期策略" class="headerlink" title="Redis过期策略"></a>Redis过期策略</h2><ul>
+<li><p><strong>我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！</strong></p>
+</li>
+<li><p><strong>过期策略有三种</strong></p>
+<ol>
+<li><strong>定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&amp;吞吐量</strong></li>
+<li><strong>惰性过期:只有当访问一个Key的时候,Redis才会去判断这个Key是否已经过期,如果过期就清除数据,这种策略可以最大化的减少cpu资源使用率,却对Memory不友好,如果有很多过期的Key一直不被访问,那就一直不会被清除,所以很占内存资源</strong></li>
+<li><strong>定期过期:每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。</strong><br><strong>(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。)</strong></li>
+</ol>
+</li>
 </ul>
-<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
-<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
-<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
-<li>查看系统磁盘空间的使用情况</li>
+<h2 id="Redis淘汰策略"><a href="#Redis淘汰策略" class="headerlink" title="Redis淘汰策略"></a>Redis淘汰策略</h2><ul>
+<li><p><strong>Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据</strong></p>
+</li>
+<li><p><strong>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。</strong></p>
+</li>
+<li><p><strong>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。</strong></p>
+</li>
+<li><p><strong>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。</strong></p>
+</li>
+<li><p><strong>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。</strong></p>
+</li>
+<li><p><strong>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。</strong></p>
+</li>
+<li><p><strong>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。</strong></p>
+</li>
 </ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
-<p><strong>输出文件系统的 inodes 信息</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
-<li>显示文件或目录所占的磁盘空间</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>显示当前目录大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
-<p><strong>显示当前目录下所有文件的大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
-<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>设置时区</strong></p>
-<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
-<p><strong>安装ntpdate命令</strong></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
-<p><strong>同步时间</strong></p>
-<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看时间是否同步成功</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
+]]></content>
       <tags>
-        <tag>Linux</tag>
+        <tag>Redis</tag>
       </tags>
   </entry>
   <entry>
@@ -56,7 +43,7 @@
     <content><![CDATA[<!--more!-->
 
 <h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch">搭建Elasticsearch</a></strong></li>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
 </ul>
 <h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
@@ -110,40 +97,32 @@
       </tags>
   </entry>
   <entry>
-    <title>Redis过期策略与淘汰策略</title>
-    <url>/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</url>
+    <title>搭建MySql</title>
+    <url>/2019/12/10/%E6%90%AD%E5%BB%BAMySql/</url>
     <content><![CDATA[<span id="more"></span>
 
-<h2 id="Redis过期策略"><a href="#Redis过期策略" class="headerlink" title="Redis过期策略"></a>Redis过期策略</h2><ul>
-<li><p><strong>我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！</strong></p>
-</li>
-<li><p><strong>过期策略有三种</strong></p>
-<ol>
-<li><strong>定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&amp;吞吐量</strong></li>
-<li><strong>惰性过期:只有当访问一个Key的时候,Redis才会去判断这个Key是否已经过期,如果过期就清除数据,这种策略可以最大化的减少cpu资源使用率,却对Memory不友好,如果有很多过期的Key一直不被访问,那就一直不会被清除,所以很占内存资源</strong></li>
-<li><strong>定期过期:每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。</strong><br><strong>(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。)</strong></li>
+<h2 id="Linux服务器搭建Mysql"><a href="#Linux服务器搭建Mysql" class="headerlink" title="Linux服务器搭建Mysql"></a>Linux服务器搭建Mysql</h2><ol>
+<li><strong>创建mysql用户组</strong><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo groupadd mysql</span></span><br><span class="line"><span class="attribute">sudo useradd -g mysql mysql</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>创建mysql初始化目录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;instport&#125;</span>为新建的实例端口号，如<span class="number">3306</span></span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/lock</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/etc</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/log</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/pid</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/socket</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/tmp</span><br><span class="line">注意binlog和data目录放到数据盘：</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/binlog</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/data</span><br></pre></td></tr></table></figure></li>
+<li><strong>在&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;etc中放入my.cnf配置文件</strong><br> <strong><a href="https://pan.baidu.com/s/1ZV79aXaEvjuCXDpP0YtA2Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
+<li><strong>解压mysql安装包并创建软链接</strong><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">tar</span> -zxvf mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64.tar.gz -C 解压到指定目录</span><br><span class="line"><span class="attribute">ln</span> -s /解压路径/mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64 /home/mysql/base</span><br></pre></td></tr></table></figure></li>
+<li>修改用户组：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /home/mysql/</span><br><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /data1/mysql/</span><br></pre></td></tr></table></figure></li>
+<li>初始化mysql实例，以3306实例为例： <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysqld --defaults-file=/</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>etc/my.cnf --initialize</span><br></pre></td></tr></table></figure>
+ <strong><font color="#E74C3C">注意1：</font><br/></strong> <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">如果初始化时，出现如下报错：</span><br><span class="line"><span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysqld: error <span class="keyword">while</span> loading shared libraries: libaio.so.<span class="number">1</span>: cannot open shared object <span class="keyword">file</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">解决方法：</span><br><span class="line">sudo yum install -y libaio</span><br></pre></td></tr></table></figure>
+ <strong><font color="#E74C3C">注意2：</font><br/></strong> <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">如果需要重新执行初始化命令，则需要先删掉数据目录下的所有内容，然后再执行初始化命令：</span><br><span class="line">sudo rm -rf <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/data/</span>*</span><br></pre></td></tr></table></figure></li>
+<li><strong>初始化后找到&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;log&#x2F;mysql-error.log输出的密码，用作root登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">找临时密码的方法：</span><br><span class="line">sudo cat <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/log/my</span>sql-error.log |grep <span class="string">&#x27;temporary password&#x27;</span></span><br><span class="line">找到如下内容：</span><br><span class="line">A temporary password is generated <span class="keyword">for</span> root@localhost: aXnUAxMil45d2</span><br><span class="line">密码为：aXnUAxMil45d2</span><br></pre></td></tr></table></figure></li>
+<li><strong>在&#x2F;home&#x2F;mysql下面增加mysql服务启动&#x2F;停止脚本</strong><br> <strong><a href="https://pan.baidu.com/s/1n-FQQinXLyQsQ2rhmuls-Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
+<li><strong>启动mysql服务：</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo -u mysql bash <span class="regexp">/home/my</span>sql/mysql.sh  -P <span class="variable">$&#123;instport&#125;</span> start</span><br></pre></td></tr></table></figure></li>
+<li><strong>临时登录mysql</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysql -h localhost -S /</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>socket/mysql.sock  -uroot -P<span class="variable">$&#123;instport&#125;</span> -p<span class="string">&#x27;aXnUAxMil45d2&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>登录后，首先修改mysql root默认密码及host：</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> PASSWORD <span class="keyword">FOR</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span><span class="operator">=</span><span class="string">&#x27;新密码&#x27;</span>; </span><br><span class="line">flush  privileges; </span><br></pre></td></tr></table></figure></li>
+<li><strong>执行 exit 退出,重新登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysql -h localhost -uroot -P<span class="variable">$&#123;instport&#125;</span> -pnewPassword</span><br></pre></td></tr></table></figure></li>
+<li><strong>修改支持主机ip方式连接</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> mysql.user <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> host<span class="operator">=</span><span class="string">&#x27;localhost&#x27;</span><span class="keyword">and</span> `<span class="keyword">user</span>`<span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<strong>执行exit退出,就可以使用本机Ip连接了,也可以使用Navicat远程连接</strong></li>
 </ol>
-</li>
-</ul>
-<h2 id="Redis淘汰策略"><a href="#Redis淘汰策略" class="headerlink" title="Redis淘汰策略"></a>Redis淘汰策略</h2><ul>
-<li><p><strong>Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据</strong></p>
-</li>
-<li><p><strong>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。</strong></p>
-</li>
-<li><p><strong>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。</strong></p>
-</li>
-</ul>
+<p><strong><font color="#E74C3C">至此！已经搭建完成,祝您工作愉快！！！</font><br/></strong></p>
 ]]></content>
       <tags>
-        <tag>Redis</tag>
+        <tag>Environment build</tag>
       </tags>
   </entry>
   <entry>
@@ -192,32 +171,53 @@
       </tags>
   </entry>
   <entry>
-    <title>搭建MySql</title>
-    <url>/2019/12/10/%E6%90%AD%E5%BB%BAMySql/</url>
+    <title>Linux常用命令</title>
+    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<span id="more"></span>
 
-<h2 id="Linux服务器搭建Mysql"><a href="#Linux服务器搭建Mysql" class="headerlink" title="Linux服务器搭建Mysql"></a>Linux服务器搭建Mysql</h2><ol>
-<li><strong>创建mysql用户组</strong><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo groupadd mysql</span></span><br><span class="line"><span class="attribute">sudo useradd -g mysql mysql</span></span><br></pre></td></tr></table></figure></li>
-<li><strong>创建mysql初始化目录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;instport&#125;</span>为新建的实例端口号，如<span class="number">3306</span></span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/lock</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/etc</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/log</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/pid</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/socket</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/tmp</span><br><span class="line">注意binlog和data目录放到数据盘：</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/binlog</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/data</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;etc中放入my.cnf配置文件</strong><br> <strong><a href="https://pan.baidu.com/s/1ZV79aXaEvjuCXDpP0YtA2Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>解压mysql安装包并创建软链接</strong><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">tar</span> -zxvf mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64.tar.gz -C 解压到指定目录</span><br><span class="line"><span class="attribute">ln</span> -s /解压路径/mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64 /home/mysql/base</span><br></pre></td></tr></table></figure></li>
-<li>修改用户组：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /home/mysql/</span><br><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /data1/mysql/</span><br></pre></td></tr></table></figure></li>
-<li>初始化mysql实例，以3306实例为例： <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysqld --defaults-file=/</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>etc/my.cnf --initialize</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意1：</font><br/></strong> <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">如果初始化时，出现如下报错：</span><br><span class="line"><span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysqld: error <span class="keyword">while</span> loading shared libraries: libaio.so.<span class="number">1</span>: cannot open shared object <span class="keyword">file</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">解决方法：</span><br><span class="line">sudo yum install -y libaio</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意2：</font><br/></strong> <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">如果需要重新执行初始化命令，则需要先删掉数据目录下的所有内容，然后再执行初始化命令：</span><br><span class="line">sudo rm -rf <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/data/</span>*</span><br></pre></td></tr></table></figure></li>
-<li><strong>初始化后找到&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;log&#x2F;mysql-error.log输出的密码，用作root登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">找临时密码的方法：</span><br><span class="line">sudo cat <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/log/my</span>sql-error.log |grep <span class="string">&#x27;temporary password&#x27;</span></span><br><span class="line">找到如下内容：</span><br><span class="line">A temporary password is generated <span class="keyword">for</span> root@localhost: aXnUAxMil45d2</span><br><span class="line">密码为：aXnUAxMil45d2</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql下面增加mysql服务启动&#x2F;停止脚本</strong><br> <strong><a href="https://pan.baidu.com/s/1n-FQQinXLyQsQ2rhmuls-Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>启动mysql服务：</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo -u mysql bash <span class="regexp">/home/my</span>sql/mysql.sh  -P <span class="variable">$&#123;instport&#125;</span> start</span><br></pre></td></tr></table></figure></li>
-<li><strong>临时登录mysql</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysql -h localhost -S /</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>socket/mysql.sock  -uroot -P<span class="variable">$&#123;instport&#125;</span> -p<span class="string">&#x27;aXnUAxMil45d2&#x27;</span></span><br></pre></td></tr></table></figure></li>
-<li><strong>登录后，首先修改mysql root默认密码及host：</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> PASSWORD <span class="keyword">FOR</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span><span class="operator">=</span><span class="string">&#x27;新密码&#x27;</span>; </span><br><span class="line">flush  privileges; </span><br></pre></td></tr></table></figure></li>
-<li><strong>执行 exit 退出,重新登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysql -h localhost -uroot -P<span class="variable">$&#123;instport&#125;</span> -pnewPassword</span><br></pre></td></tr></table></figure></li>
-<li><strong>修改支持主机ip方式连接</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> mysql.user <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> host<span class="operator">=</span><span class="string">&#x27;localhost&#x27;</span><span class="keyword">and</span> `<span class="keyword">user</span>`<span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<strong>执行exit退出,就可以使用本机Ip连接了,也可以使用Navicat远程连接</strong></li>
-</ol>
-<p><strong><font color="#E74C3C">至此！已经搭建完成,祝您工作愉快！！！</font><br/></strong></p>
-]]></content>
+<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
+<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
+</ul>
+<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
+<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
+<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
+<li>查看系统磁盘空间的使用情况</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
+<p><strong>输出文件系统的 inodes 信息</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
+<li>显示文件或目录所占的磁盘空间</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>显示当前目录大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
+<p><strong>显示当前目录下所有文件的大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
+<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
+<p><strong>设置时区</strong></p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
+<p><strong>安装ntpdate命令</strong></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
+<p><strong>同步时间</strong></p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看时间是否同步成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>Environment build</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
