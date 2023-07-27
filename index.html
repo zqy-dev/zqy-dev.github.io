@@ -1,710 +1,667 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<!-- Head tag -->
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>qyblog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="What is the difference between a man without a dream and a salted fish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="qyblog">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="qyblog">
-<meta property="og:description" content="What is the difference between a man without a dream and a salted fish">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="King Qiuyu">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="qyblog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="What is the difference between a man without a dream and a salted fish">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Qiuyu的博客 | Qiuyu Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://qyblog.fun/">
+
+    <!-- Bootstrap Core CSS -->
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-  
+    <!-- Custom CSS -->
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/css/hux-blog.min.css">
 
-  
-  
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
 <meta name="generator" content="Hexo 6.3.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">qyblog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">King Qiuyu</a>
-        </h2>
-      
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Qiuyu Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home_bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Qiuyu Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">What is the difference between a man without a dream and a salted fish</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-搭建MySql" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/" class="article-date">
-  <time class="dt-published" datetime="2019-12-10T06:11:42.000Z" itemprop="datePublished">2019-12-10</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>
-  </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
         
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/">搭建MySql</a>
-    </h1>
-  
 
-      </header>
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2019/12/10/搭建MySql/">
+        <h2 class="post-title">
+            搭建MySql
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+Linux服务器搭建Mysql
+创建mysql用户组12sudo groupadd mysqlsudo useradd -g mysql mysql
+创建mysql初始化目录12345678910$&#123;instport&#125;为新建的实例端口号，如3306sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/locksud......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-12-10
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/12/05/搭建ZooKeeper集群/">
+        <h2 class="post-title">
+            搭建ZooKeeper集群
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+服务器搭建ZooKeeper集群
+jdk下载
+
+
+下载完成后解压tar包1tar -zxvf jdk.tar -C 解压到指定目录
+配置环境变量1234echo &#x27;export JAVA_HOME=jdk解压路径&#x27; | sudo tee -a /etc/profileecho &#x27;export PATH=$PATH:$JAVA_HOME/bin&#x27; |......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-12-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/11/15/Redis过期策略与淘汰策略/">
+        <h2 class="post-title">
+            Redis过期策略与淘汰策略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+Redis过期策略
+我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！
+
+过期策略有三种
+
+定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-11-15
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/11/06/Linux常用命令/">
+        <h2 class="post-title">
+            Linux常用命令
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+Linux常用命令
+以下所有操作命令都是基于CentOS7
+
+查看防火墙状态1firewall-cmd --state
+
+关闭防火墙1systemctl stop firewalld.service
+
+禁止开机启动防火墙1systemctl disable firewalld.service 
+
+关闭selinux1vi /etc/selinux/config
+将SELINUX&#x3D......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-11-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/10/22/ElasticSearch常用的DSL脚本/">
+        <h2 class="post-title">
+            ElasticSearch常用的DSL脚本
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+ElasticSearch常用的DSL脚本
+以下所有脚本执行都是使用ElasticSearch可视化工具ElasticSearch-head执行的,如果没有安装可以查看搭建ElasticSearch
+
+新建索引1234567891011121314151617181920212223put http://localhost:9200/my_index_v1    &#123;      ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-10-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/10/22/搭建ElasticSearch/">
+        <h2 class="post-title">
+            搭建ElasticSearch
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+Windows搭建ElasticSearch
+ElasticSearch下载
+
+
+下载好之后解压到自己的目录,切到安装的elasticsearch-6.6.1&#x2F;bin目录下,执行elasticsearch.bat命令即可,等待控制台信息出现如下示例 
+打开浏览器输入localhost:9200;出现如下示例证明安装成功 
+
+
+一般情况下,我们会通过一个可视化工具来查看ES的状态......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Zqy on
+        2019-10-22
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
     
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <span id="more"></span>
-
-<h2 id="Linux服务器搭建Mysql"><a href="#Linux服务器搭建Mysql" class="headerlink" title="Linux服务器搭建Mysql"></a>Linux服务器搭建Mysql</h2><ol>
-<li><strong>创建mysql用户组</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd mysql</span><br><span class="line">sudo useradd -g mysql mysql</span><br></pre></td></tr></table></figure></li>
-<li><strong>创建mysql初始化目录</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$&#123;instport&#125;为新建的实例端口号，如3306</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/lock</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/etc</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/log</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/pid</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/socket</span><br><span class="line">sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/tmp</span><br><span class="line">注意binlog和data目录放到数据盘：</span><br><span class="line">sudo mkdir -p /data1/mysql/multi/$&#123;instport&#125;/binlog</span><br><span class="line">sudo mkdir -p /data1/mysql/multi/$&#123;instport&#125;/data</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;etc中放入my.cnf配置文件</strong><br> <strong><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ZV79aXaEvjuCXDpP0YtA2Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>解压mysql安装包并创建软链接</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf mysql-5.7.28-linux-glibc2.12-x86_64.tar.gz -C 解压到指定目录</span><br><span class="line">ln -s /解压路径/mysql-5.7.28-linux-glibc2.12-x86_64 /home/mysql/base</span><br></pre></td></tr></table></figure></li>
-<li>修改用户组：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R mysql:mysql /home/mysql/</span><br><span class="line">sudo chown -R mysql:mysql /data1/mysql/</span><br></pre></td></tr></table></figure></li>
-<li>初始化mysql实例，以3306实例为例： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /home/mysql/base/bin/mysqld --defaults-file=/home/mysql/multi/$&#123;instport&#125;/etc/my.cnf --initialize</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意1：</font><br/></strong> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果初始化时，出现如下报错：</span><br><span class="line">/home/mysql/base/bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">解决方法：</span><br><span class="line">sudo yum install -y libaio</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意2：</font><br/></strong> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果需要重新执行初始化命令，则需要先删掉数据目录下的所有内容，然后再执行初始化命令：</span><br><span class="line">sudo rm -rf /data1/mysql/multi/$&#123;instport&#125;/data/*</span><br></pre></td></tr></table></figure></li>
-<li><strong>初始化后找到&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;log&#x2F;mysql-error.log输出的密码，用作root登录</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">找临时密码的方法：</span><br><span class="line">sudo cat /home/mysql/multi/$&#123;instport&#125;/log/mysql-error.log |grep &#x27;temporary password&#x27;</span><br><span class="line">找到如下内容：</span><br><span class="line">A temporary password is generated for root@localhost: aXnUAxMil45d2</span><br><span class="line">密码为：aXnUAxMil45d2</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql下面增加mysql服务启动&#x2F;停止脚本</strong><br> <strong><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1n-FQQinXLyQsQ2rhmuls-Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>启动mysql服务：</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u mysql bash /home/mysql/mysql.sh  -P $&#123;instport&#125; start</span><br></pre></td></tr></table></figure></li>
-<li><strong>临时登录mysql</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /home/mysql/base/bin/mysql -h localhost -S /home/mysql/multi/$&#123;instport&#125;/socket/mysql.sock  -uroot -P$&#123;instport&#125; -p&#x27;aXnUAxMil45d2&#x27;</span><br></pre></td></tr></table></figure></li>
-<li><strong>登录后，首先修改mysql root默认密码及host：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> PASSWORD <span class="keyword">FOR</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span><span class="operator">=</span><span class="string">&#x27;新密码&#x27;</span>; </span><br><span class="line">flush  privileges; </span><br></pre></td></tr></table></figure></li>
-<li><strong>执行 exit 退出,重新登录</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo /home/mysql/base/bin/mysql -h localhost -uroot -P$&#123;instport&#125; -pnewPassword</span><br></pre></td></tr></table></figure></li>
-<li><strong>修改支持主机ip方式连接</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> mysql.user <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> host<span class="operator">=</span><span class="string">&#x27;localhost&#x27;</span><span class="keyword">and</span> `<span class="keyword">user</span>`<span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<strong>执行exit退出,就可以使用本机Ip连接了,也可以使用Navicat远程连接</strong></li>
-</ol>
-<p><strong><font color="#E74C3C">至此！已经搭建完成,祝您工作愉快！！！</font><br/></strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/12/10/%E6%90%AD%E5%BB%BAMySql/" data-id="clkjgbvz1000ejis66owvdlz8" data-title="搭建MySql" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-搭建ZooKeeper集群" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/" class="article-date">
-  <time class="dt-published" datetime="2019-12-05T04:09:25.000Z" itemprop="datePublished">2019-12-05</time>
-</a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/">搭建ZooKeeper集群</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <span id="more"></span>
-
-<h2 id="服务器搭建ZooKeeper集群"><a href="#服务器搭建ZooKeeper集群" class="headerlink" title="服务器搭建ZooKeeper集群"></a>服务器搭建ZooKeeper集群</h2><ol>
-<li><strong><a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html"><font color="#1A5276" >jdk下载</font><br/></a></strong></li>
-</ol>
-<ul>
-<li>下载完成后解压tar包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk.tar -C 解压到指定目录</span><br></pre></td></tr></table></figure></li>
-<li>配置环境变量<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export JAVA_HOME=jdk解压路径&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export PATH=$PATH:$JAVA_HOME/bin&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export CLASSPATH=.:$JAVA_HOME/lib:$JAVA_HOME/bin&#x27; | sudo tee -a /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="2">
-<li><strong>创建ZooKeeper用户组</strong><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd zookeeper</span><br><span class="line">sudo useradd zookeeper -g zookeeper</span><br></pre></td></tr></table></figure></li>
-<li><strong><a target="_blank" rel="noopener" href="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.12/"><font color="#1A5276" >ZooKeeper下载</font><br/></a></strong></li>
-</ol>
-<ul>
-<li>下载完之后解压安装包<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf zookeeper-3.4.12.tar.gz -C 解压指定目录</span><br></pre></td></tr></table></figure></li>
-<li>配置环境变量<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;export ZOOKEEPER_HOME=zookeeper解压路径&#x27; | sudo tee -a /etc/profile</span><br><span class="line">echo &#x27;export PATH=$PATH:$ZOOKEEPER_HOME/bin:$ZOOKEEPER_HOME/conf&#x27; | sudo tee -a /etc/profile</span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></li>
-<li>修改ZooKeePer解压的目录所属用户组<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown zookeeper:zookeeper -R zookeeper-3.4.12</span><br></pre></td></tr></table></figure></li>
-<li>复制示例配置文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd zookeeper/conf/</span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure></li>
-<li>修改配置信息<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ticketTime=2000</span><br><span class="line">initLimit=10</span><br><span class="line">syncLimit=5</span><br><span class="line"># 数据路径</span><br><span class="line">dataDir=/zookeeper-3.4.12/data</span><br><span class="line"># 日志路径</span><br><span class="line">dataLogDir=/zookeeper-3.4.12/logs</span><br><span class="line">clientPort=2181</span><br><span class="line"># cluster info</span><br><span class="line">server.1=node151:2888:3888</span><br><span class="line">server.2=node152:2888:3888</span><br><span class="line">server.3=node153:2888:3888</span><br></pre></td></tr></table></figure></li>
-<li>创建数据目录,日志目录<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper mkdir  data</span><br><span class="line">sudo -u zookeeper mkdir logs</span><br></pre></td></tr></table></figure></li>
-<li>修改bin目录项zkEnv.sh命令<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim vim /zookeeper-3.4.12/bin/zkEnv.sh</span><br><span class="line">修改内容:</span><br><span class="line">ZOO_LOG_DIR=&quot;/zookeeper-3.4.12/logs&quot;</span><br></pre></td></tr></table></figure></li>
-<li>创建myid文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">touck /zookeeper-3.4.12/data/myid</span><br><span class="line">填入内容与zoo.cfg文件中server编号一致</span><br><span class="line">echo &quot;1&quot; &gt; myid</span><br></pre></td></tr></table></figure></li>
-<li>复制到另外俩太机器上一次修改myid文件内容<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;2&quot; &gt; myid</span><br><span class="line">echo &quot;3&quot; &gt; myid</span><br></pre></td></tr></table></figure></li>
-<li>配置hosts<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip node151</span><br><span class="line">ip node152</span><br><span class="line">ip node153</span><br></pre></td></tr></table></figure></li>
-<li>启动ZooKeeper集群<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh start</span><br></pre></td></tr></table></figure></li>
-<li>查看启动状态<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh status</span><br></pre></td></tr></table></figure></li>
-<li>停止集群<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -u zookeeper -E /zookeeper-3.4.12/bin/zkServer.sh stop</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ol start="4">
-<li><strong><font color="#E74C3C">如果查看状态报错:Error contacting service. It is probably not running.</font><br/></strong><ol>
-<li>说明zkEnv.sh命令内容没有修改日志路径</li>
-<li>查看服务器防火墙是否关闭</li>
-<li>查看配置文件是否配置成功</li>
-<li>查看host是否配置成功</li>
-</ol>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/" data-id="clkjgbvz1000fjis6hbfx62fe" data-title="搭建ZooKeeper集群" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-Redis过期策略与淘汰策略" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" class="article-date">
-  <time class="dt-published" datetime="2019-11-15T02:57:40.000Z" itemprop="datePublished">2019-11-15</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">Redis过期策略与淘汰策略</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <span id="more"></span>
-
-<h2 id="Redis过期策略"><a href="#Redis过期策略" class="headerlink" title="Redis过期策略"></a>Redis过期策略</h2><ul>
-<li><p><strong>我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！</strong></p>
-</li>
-<li><p><strong>过期策略有三种</strong></p>
-<ol>
-<li><strong>定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&amp;吞吐量</strong></li>
-<li><strong>惰性过期:只有当访问一个Key的时候,Redis才会去判断这个Key是否已经过期,如果过期就清除数据,这种策略可以最大化的减少cpu资源使用率,却对Memory不友好,如果有很多过期的Key一直不被访问,那就一直不会被清除,所以很占内存资源</strong></li>
-<li><strong>定期过期:每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。</strong><br><strong>(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。)</strong></li>
-</ol>
-</li>
-</ul>
-<h2 id="Redis淘汰策略"><a href="#Redis淘汰策略" class="headerlink" title="Redis淘汰策略"></a>Redis淘汰策略</h2><ul>
-<li><p><strong>Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据</strong></p>
-</li>
-<li><p><strong>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。</strong></p>
-</li>
-<li><p><strong>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。</strong></p>
-</li>
 </ul>
 
-      
+
+
+                <!-- 如果开启评论功能 -->
+                
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/IMG_0547-modified.png" />
+                        
+
+                        
+                            <p>放荡不羁爱自由</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://twitter.com/Demonbane_x">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://www.zhihu.com/people/Demonbane">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/Demonbane">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="https://www.facebook.com/demonbane.cn">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/zqy-dev">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+            </div>
+        
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/" data-id="clkjgbvyz0007jis64c4b4kyc" data-title="Redis过期策略与淘汰策略" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
+</div>
 
 
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/Demonbane_x">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Demonbane">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
 
-  
-    <article id="post-Linux常用命令" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time class="dt-published" datetime="2019-11-06T09:40:02.000Z" itemprop="datePublished">2019-11-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
-  </div>
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Demonbane">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Linux常用命令</a>
-    </h1>
-  
+                
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/demonbane.cn">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <span id="more"></span>
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/zqy-dev">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
 
-<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
-<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
-</ul>
-<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br></pre></td></tr></table></figure>
+                
 
-<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl disable firewalld.service </span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br></pre></td></tr></table></figure>
-<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
-<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
-<li>查看系统磁盘空间的使用情况</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span><br><span class="line">-k 以 kB 为单位输出文件系统分区使用情况。</span><br><span class="line">-m 以 mB 为单位输出文件系统分区使用情况。</span><br><span class="line">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span><br><span class="line">-i 列出文件系统分区的 inodes 信息。</span><br><span class="line">-T 显示磁盘分区的文件系统类型。</span><br></pre></td></tr></table></figure></p>
-<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ df -hT</span><br></pre></td></tr></table></figure>
-<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ df -h test/</span><br></pre></td></tr></table></figure>
-<p><strong>输出文件系统的 inodes 信息</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ df -ih</span><br></pre></td></tr></table></figure>
-
-<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
-<li>显示文件或目录所占的磁盘空间</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span><br><span class="line">-s 显示文件或整个目录的大小，默认单位为 kB</span><br></pre></td></tr></table></figure></p>
-<p><strong>显示当前目录大小</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ du -hs</span><br></pre></td></tr></table></figure>
-<p><strong>显示当前目录下所有文件的大小</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ du -hs ./*</span><br></pre></td></tr></table></figure>
-
-<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ timedatectl status|grep &#x27;Time zone&#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>设置时区</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ timedatectl set-timezone Asia/Shanghai</span><br></pre></td></tr></table></figure>
-<p><strong>安装ntpdate命令</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum -y install ntpdate</span><br></pre></td></tr></table></figure>
-<p><strong>同步时间</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp.org</span><br></pre></td></tr></table></figure>
-<p><strong>查看时间是否同步成功</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ date</span><br></pre></td></tr></table></figure>
-      
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Qiuyu Blog 2023 
+                    <br>
+<!--                     Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> -->
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="https://qyblog.fun">QY</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="clkjgbvyy0003jis691b668yh" data-title="Linux常用命令" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-ElasticSearch常用的DSL脚本" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/" class="article-date">
-  <time class="dt-published" datetime="2019-10-22T12:11:57.000Z" itemprop="datePublished">2019-10-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/ElasticSearch/">ElasticSearch</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/">ElasticSearch常用的DSL脚本</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <!--more!-->
-
-<h1 id="ElasticSearch常用的DSL脚本"><a href="#ElasticSearch常用的DSL脚本" class="headerlink" title="ElasticSearch常用的DSL脚本"></a>ElasticSearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用ElasticSearch可视化工具ElasticSearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建ElasticSearch</a></strong></li>
-</ul>
-<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &#123;</span><br><span class="line">          &quot;refresh_interval&quot;: &quot;60s&quot;,</span><br><span class="line">          &quot;number_of_shards&quot;: &quot;10&quot;,</span><br><span class="line">          &quot;number_of_replicas&quot;: &quot;1&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;my_index&quot;: &#123;</span><br><span class="line">          &quot;dynamic&quot;: &quot;strict&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;gender&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加成功</strong><br><img src="/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
-<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_alias/my_index</span><br></pre></td></tr></table></figure>
-<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get http://localhost:9200/my_index_v1/_alias/</span><br></pre></td></tr></table></figure>
-<p><strong>查询结果如图所示</strong><br><img src="/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
-<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get http://localhost:9200/_alias/my_index</span><br></pre></td></tr></table></figure>
-
-<p>##ElasticSearch添加索引别名的好处以及操作</p>
-<ul>
-<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
-<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
-<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
-<li>给多个索引分组。</li>
-<li>给索引的一个子集创建视图。</li>
-</ol>
-</li>
-<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>  *. ElasticSearch索引别名管理支持单个索引操作也支持多个索引操作<br>  1. 单个索引操作: _alias<br>  2. 多个索引操作: _aliases<ul>
-<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost/_aliases/</span><br><span class="line">&#123;</span><br><span class="line">  &quot;actions&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;remove&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;my_index_v1&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;my_index&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;add&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;my_index_v2&quot;,</span><br><span class="line">        &quot;alias&quot;: &quot;my_index&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如果所示增加成功</strong><br><img src="/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
-<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">put http://localhost:9200/my_index_v1/_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;dynamic_date_formats&quot;: [</span><br><span class="line">    &quot;yyyy-MM-dd&quot;,</span><br><span class="line">    &quot;yyyy-MM-ddHH: mm: ss&quot;,</span><br><span class="line">    &quot;yy-MM-ddHH: mm: ss&quot;,</span><br><span class="line">    &quot;date_optional_time&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;createTime&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;long&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;updateTime&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;long&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><font color=#FF5733></font><br /></strong></p>
-<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/my_index</span><br><span class="line"> &#123;</span><br><span class="line">   &quot;name&quot;: &quot;zhangsan&quot;,</span><br><span class="line">   &quot;gender&quot;: &quot;male&quot;,</span><br><span class="line">   &quot;age&quot;: 20</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加数据成功</strong><br><img src="/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
-<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/match_all.png"></p>
-<ol>
-<li>took:表示查询执行时长(单位是毫秒)</li>
-<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
-<li>_shards:分片的详情</li>
-<li>hits:查询的数据详情</li>
-<li>total:查询到的总数</li>
-</ol>
-<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
-<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,ElasticSearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
-</ul>
-<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">post http://localhost:9200/my_index_v1/_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123;</span><br><span class="line">          &quot;name&quot;: &quot;zhangsan&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/" data-id="clkjgbvyw0001jis65o1s5ki6" data-title="ElasticSearch常用的DSL脚本" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es/" rel="tag">es</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-搭建ElasticSearch" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/" class="article-date">
-  <time class="dt-published" datetime="2019-10-22T08:14:46.000Z" itemprop="datePublished">2019-10-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/">搭建ElasticSearch</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <span id="more"></span>
-
-<h1 id="Windows搭建ElasticSearch"><a href="#Windows搭建ElasticSearch" class="headerlink" title="Windows搭建ElasticSearch"></a>Windows搭建ElasticSearch</h1><ul>
-<li><strong><a target="_blank" rel="noopener" href="https://www.elastic.co/downloads/elasticsearch"><font color="#1A5276">ElasticSearch下载</font><br/></a></strong></li>
-</ul>
-<ol>
-<li>下载好之后解压到自己的目录,切到安装的elasticsearch-6.6.1&#x2F;bin目录下,执行elasticsearch.bat命令即可,等待控制台信息出现如下示例<br> <img src="/start_es.png"></li>
-<li>打开浏览器输入localhost:9200;出现如下示例证明安装成功<br> <img src="/start_es_02.png"></li>
-</ol>
-<ul>
-<li><p>一般情况下,我们会通过一个可视化工具来查看ES的状态以及数据,这个时候我们需要安装一个ElasticSearch-head,在安装之前我们做好环境准备</p>
-<ol>
-<li>安装node: <strong><a target="_blank" rel="noopener" href="http://nodejs.cn/download/"><font color=#1A5276>node下载</font><br/></a></strong> 下载完成后选择安装路径,一路next即可,安装完成以后打开cmd命令行输入node –version出现版本号即为成功</li>
-<li>切换到刚刚安装的node目录下,执行安装grunt命令:npm install -g grunt-cli </li>
-<li>所以依赖安装完成之后,现在准备安装head: <strong><a target="_blank" rel="noopener" href="https://github.com/mobz/elasticsearch-head"><font color=#1A5276>ElasticSearch-head下载<font><br/></a></strong> 下载.zip包完成之后解压即可,打开cmd切换到elasticsearch-head目录下执行启动命令:npm run start出现如下示例证明启动成功<br> <img src="/elaticsearch-head-start.png"></li>
-<li>打开浏览器输localhost:9100;初夏如下示例证明安装成功<br> <img src="/elasticsearch-head-desktop.png"></li>
-</ol>
-</li>
-<li><p><strong><font color="#E74C3C">如果打开elasticsearch-head界面发现是未连接灰色的如图所示,这时候不要慌,切到elasticsearch-6.6.1&#x2F;config目录下找到elasticsearch.yml文件,打开文件在最下方添加</font><br /></strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-<p> <img src="/%E6%9C%AA%E8%BF%9E%E6%8E%A5%E7%B4%A0%E6%9D%90.png"></p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/" data-id="clkjgbvz0000ajis672c65dnh" data-title="搭建ElasticSearch" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-java基础知识" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2019/10/11/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="article-date">
-  <time class="dt-published" datetime="2019-10-11T11:59:42.000Z" itemprop="datePublished">2019-10-11</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/java/">java</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2019/10/11/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">java基础知识</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="java数据类型"><a href="#java数据类型" class="headerlink" title="java数据类型"></a>java数据类型</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">byte     (字节型)</span><br><span class="line">int      (整型)</span><br><span class="line">float    (单精度浮点型)</span><br><span class="line">double   (双精度浮点型)</span><br><span class="line">short    (短整型)</span><br><span class="line">long     (长整型)</span><br><span class="line">char     (字符型)</span><br><span class="line">boolean  (布尔型)</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2019/10/11/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" data-id="clkjgbvz00009jis6eej09rgr" data-title="java基础知识" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" rel="tag">java基础篇</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/es/" rel="tag">es</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" rel="tag">java基础篇</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/redis/" rel="tag">redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag">环境搭建</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/es/" style="font-size: 10px;">es</a> <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%AF%87/" style="font-size: 10px;">java基础篇</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" style="font-size: 20px;">环境搭建</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/12/10/%E6%90%AD%E5%BB%BAMySql/">搭建MySql</a>
-          </li>
-        
-          <li>
-            <a href="/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/">搭建ZooKeeper集群</a>
-          </li>
-        
-          <li>
-            <a href="/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/">Redis过期策略与淘汰策略</a>
-          </li>
-        
-          <li>
-            <a href="/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">Linux常用命令</a>
-          </li>
-        
-          <li>
-            <a href="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/">ElasticSearch常用的DSL脚本</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2023 King Qiuyu<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
 
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
 
 
+<!-- Custom Theme JavaScript -->
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+<script src="/js/hux-blog.min.js"></script>
 
 
 
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
 
-<script src="/js/script.js"></script>
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://qyblog.fun/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
 
 
 
 
 
-  </div>
+<!-- Image to hack wechat -->
+<img src="https://qyblog.fun/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
 </body>
+
 </html>
