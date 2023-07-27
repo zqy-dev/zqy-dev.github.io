@@ -13,11 +13,11 @@
 
     <title>
         
-          搭建ElasticSearch - Qiuyu的博客 | Qiuyu Blog
+          搭建Elasticsearch - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/2019/10/22/搭建ElasticSearch/">
+    <link rel="canonical" href="https://qyblog.fun/2019/10/22/搭建Elasticsearch/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -99,14 +99,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -164,7 +164,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/img/home_bg.jpg')
+        background-image: url('elasticsearch_bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -177,7 +177,7 @@
                           <a class="tag" href="/tags/#Environment build" title="Environment build">Environment build</a>
                         
                     </div>
-                    <h1>搭建ElasticSearch</h1>
+                    <h1>搭建Elasticsearch</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Zqy on
@@ -202,25 +202,25 @@
 
                 <span id="more"></span>
 
-<h1 id="Windows搭建ElasticSearch"><a href="#Windows搭建ElasticSearch" class="headerlink" title="Windows搭建ElasticSearch"></a>Windows搭建ElasticSearch</h1><ul>
-<li><strong><a target="_blank" rel="noopener" href="https://www.elastic.co/downloads/elasticsearch"><font color="#1A5276">ElasticSearch下载</font><br/></a></strong></li>
+<h1 id="Windows搭建Elasticsearch"><a href="#Windows搭建Elasticsearch" class="headerlink" title="Windows搭建Elasticsearch"></a>Windows搭建Elasticsearch</h1><ul>
+<li><strong><a target="_blank" rel="noopener" href="https://www.elastic.co/downloads/Elasticsearch"><font color="#1A5276">Elasticsearch下载</font><br/></a></strong></li>
 </ul>
 <ol>
-<li>下载好之后解压到自己的目录,切到安装的elasticsearch-6.6.1&#x2F;bin目录下,执行elasticsearch.bat命令即可,等待控制台信息出现如下示例<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es.png"></li>
-<li>打开浏览器输入localhost:9200;出现如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es_02.png"></li>
+<li>下载好之后解压到自己的目录,切到安装的Elasticsearch-6.6.1&#x2F;bin目录下,执行Elasticsearch.bat命令即可,等待控制台信息出现如下示例<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch/start_es.png"></li>
+<li>打开浏览器输入localhost:9200;出现如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch/start_es_02.png"></li>
 </ol>
 <ul>
-<li><p>一般情况下,我们会通过一个可视化工具来查看ES的状态以及数据,这个时候我们需要安装一个ElasticSearch-head,在安装之前我们做好环境准备</p>
+<li><p>一般情况下,我们会通过一个可视化工具来查看ES的状态以及数据,这个时候我们需要安装一个Elasticsearch-head,在安装之前我们做好环境准备</p>
 <ol>
 <li>安装node: <strong><a target="_blank" rel="noopener" href="http://nodejs.cn/download/"><font color=#1A5276>node下载</font><br/></a></strong> 下载完成后选择安装路径,一路next即可,安装完成以后打开cmd命令行输入node –version出现版本号即为成功</li>
 <li>切换到刚刚安装的node目录下,执行安装grunt命令:npm install -g grunt-cli</li>
-<li>所以依赖安装完成之后,现在准备安装head: <strong><a target="_blank" rel="noopener" href="https://github.com/mobz/elasticsearch-head"><font color=#1A5276>ElasticSearch-head下载<font><br/></a></strong> 下载.zip包完成之后解压即可,打开cmd切换到elasticsearch-head目录下执行启动命令:npm run start出现如下示例证明启动成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-satrt.png"></li>
-<li>打开浏览器输localhost:9100;初夏如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-desktop.png"></li>
+<li>所以依赖安装完成之后,现在准备安装head: <strong><a target="_blank" rel="noopener" href="https://github.com/mobz/Elasticsearch-head"><font color=#1A5276>Elasticsearch-head下载<font><br/></a></strong> 下载.zip包完成之后解压即可,打开cmd切换到Elasticsearch-head目录下执行启动命令:npm run start出现如下示例证明启动成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch/elasticsearch-head-satrt.png"></li>
+<li>打开浏览器输localhost:9100;初夏如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch/elasticsearch-head-desktop.png"></li>
 </ol>
 </li>
-<li><p><strong><font color="#E74C3C">如果打开elasticsearch-head界面发现是未连接灰色的如图所示,这时候不要慌,切到elasticsearch-6.6.1&#x2F;config目录下找到elasticsearch.yml文件,打开文件在最下方添加</font><br /></strong></p>
+<li><p><strong><font color="#E74C3C">如果打开Elasticsearch-head界面发现是未连接灰色的如图所示,这时候不要慌,切到Elasticsearch-6.6.1&#x2F;config目录下找到Elasticsearch.yml文件,打开文件在最下方添加</font><br /></strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/%E6%9C%AA%E8%BF%9E%E6%8E%A5%E7%B4%A0%E6%9D%90.png"></p>
+<p><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch/%E6%9C%AA%E8%BF%9E%E6%8E%A5%E7%B4%A0%E6%9D%90.png"></p>
 </li>
 </ul>
 
@@ -232,7 +232,7 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2019/10/22/ElasticSearch常用的DSL脚本/" data-toggle="tooltip" data-placement="top" title="ElasticSearch常用的DSL脚本">&larr; Previous Post</a>
+                            <a href="/2019/10/22/Elasticsearch常用的DSL脚本/" data-toggle="tooltip" data-placement="top" title="Elasticsearch常用的DSL脚本">&larr; Previous Post</a>
                         </li>
                     
                     
