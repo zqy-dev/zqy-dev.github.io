@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux常用命令</title>
+    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
+<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
+</ul>
+<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
+<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
+<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
+<li>查看系统磁盘空间的使用情况</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
+<p><strong>输出文件系统的 inodes 信息</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
+<li>显示文件或目录所占的磁盘空间</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>显示当前目录大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
+<p><strong>显示当前目录下所有文件的大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
+<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
+<p><strong>设置时区</strong></p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
+<p><strong>安装ntpdate命令</strong></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
+<p><strong>同步时间</strong></p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看时间是否同步成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis过期策略与淘汰策略</title>
     <url>/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</url>
     <content><![CDATA[<span id="more"></span>
@@ -126,6 +176,37 @@
       </tags>
   </entry>
   <entry>
+    <title>搭建ElasticSearch</title>
+    <url>/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h1 id="Windows搭建Elasticsearch"><a href="#Windows搭建Elasticsearch" class="headerlink" title="Windows搭建Elasticsearch"></a>Windows搭建Elasticsearch</h1><ul>
+<li><strong><a href="https://www.elastic.co/downloads/Elasticsearch"><font color="#1A5276">Elasticsearch下载</font><br/></a></strong></li>
+</ul>
+<ol>
+<li>下载好之后解压到自己的目录,切到安装的Elasticsearch-6.6.1&#x2F;bin目录下,执行Elasticsearch.bat命令即可,等待控制台信息出现如下示例<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es.png"></li>
+<li>打开浏览器输入localhost:9200;出现如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es_02.png"></li>
+</ol>
+<ul>
+<li><p>一般情况下,我们会通过一个可视化工具来查看ES的状态以及数据,这个时候我们需要安装一个Elasticsearch-head,在安装之前我们做好环境准备</p>
+<ol>
+<li>安装node: <strong><a href="http://nodejs.cn/download/"><font color=#1A5276>node下载</font><br/></a></strong> 下载完成后选择安装路径,一路next即可,安装完成以后打开cmd命令行输入node –version出现版本号即为成功</li>
+<li>切换到刚刚安装的node目录下,执行安装grunt命令:npm install -g grunt-cli</li>
+<li>所以依赖安装完成之后,现在准备安装head: <strong><a href="https://github.com/mobz/Elasticsearch-head"><font color=#1A5276>Elasticsearch-head下载<font><br/></a></strong> 下载.zip包完成之后解压即可,打开cmd切换到Elasticsearch-head目录下执行启动命令:npm run start出现如下示例证明启动成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-satrt.png"></li>
+<li>打开浏览器输localhost:9100;初夏如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-desktop.png"></li>
+</ol>
+</li>
+<li><p><strong><font color="#E74C3C">如果打开Elasticsearch-head界面发现是未连接灰色的如图所示,这时候不要慌,切到Elasticsearch-6.6.1&#x2F;config目录下找到Elasticsearch.yml文件,打开文件在最下方添加</font><br /></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/%E6%9C%AA%E8%BF%9E%E6%8E%A5%E7%B4%A0%E6%9D%90.png"></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Environment build</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建ZooKeeper集群</title>
     <url>/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<span id="more"></span>
@@ -165,87 +246,6 @@
 </ol>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>Environment build</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux常用命令</title>
-    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
-<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
-</ul>
-<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
-<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
-<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
-<li>查看系统磁盘空间的使用情况</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
-<p><strong>输出文件系统的 inodes 信息</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
-<li>显示文件或目录所占的磁盘空间</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>显示当前目录大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
-<p><strong>显示当前目录下所有文件的大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
-<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>设置时区</strong></p>
-<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
-<p><strong>安装ntpdate命令</strong></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
-<p><strong>同步时间</strong></p>
-<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看时间是否同步成功</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>搭建ElasticSearch</title>
-    <url>/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h1 id="Windows搭建Elasticsearch"><a href="#Windows搭建Elasticsearch" class="headerlink" title="Windows搭建Elasticsearch"></a>Windows搭建Elasticsearch</h1><ul>
-<li><strong><a href="https://www.elastic.co/downloads/Elasticsearch"><font color="#1A5276">Elasticsearch下载</font><br/></a></strong></li>
-</ul>
-<ol>
-<li>下载好之后解压到自己的目录,切到安装的Elasticsearch-6.6.1&#x2F;bin目录下,执行Elasticsearch.bat命令即可,等待控制台信息出现如下示例<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es.png"></li>
-<li>打开浏览器输入localhost:9200;出现如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/start_es_02.png"></li>
-</ol>
-<ul>
-<li><p>一般情况下,我们会通过一个可视化工具来查看ES的状态以及数据,这个时候我们需要安装一个Elasticsearch-head,在安装之前我们做好环境准备</p>
-<ol>
-<li>安装node: <strong><a href="http://nodejs.cn/download/"><font color=#1A5276>node下载</font><br/></a></strong> 下载完成后选择安装路径,一路next即可,安装完成以后打开cmd命令行输入node –version出现版本号即为成功</li>
-<li>切换到刚刚安装的node目录下,执行安装grunt命令:npm install -g grunt-cli</li>
-<li>所以依赖安装完成之后,现在准备安装head: <strong><a href="https://github.com/mobz/Elasticsearch-head"><font color=#1A5276>Elasticsearch-head下载<font><br/></a></strong> 下载.zip包完成之后解压即可,打开cmd切换到Elasticsearch-head目录下执行启动命令:npm run start出现如下示例证明启动成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-satrt.png"></li>
-<li>打开浏览器输localhost:9100;初夏如下示例证明安装成功<br><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/elasticsearch-head-desktop.png"></li>
-</ol>
-</li>
-<li><p><strong><font color="#E74C3C">如果打开Elasticsearch-head界面发现是未连接灰色的如图所示,这时候不要慌,切到Elasticsearch-6.6.1&#x2F;config目录下找到Elasticsearch.yml文件,打开文件在最下方添加</font><br /></strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/%E6%9C%AA%E8%BF%9E%E6%8E%A5%E7%B4%A0%E6%9D%90.png"></p>
-</li>
-</ul>
 ]]></content>
       <tags>
         <tag>Environment build</tag>
