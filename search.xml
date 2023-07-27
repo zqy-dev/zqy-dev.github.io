@@ -88,65 +88,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Elasticsearch常用的DSL脚本</title>
-    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<!--more!-->
-
-<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch">搭建Elasticsearch</a></strong></li>
-</ul>
-<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
-<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
-<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
-<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
-<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
-
-<p>##Elasticsearch添加索引别名的好处以及操作</p>
-<ul>
-<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
-<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
-<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
-<li>给多个索引分组。</li>
-<li>给索引的一个子集创建视图。</li>
-</ol>
-</li>
-<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
-<li>单个索引操作: _alias</li>
-<li>多个索引操作: _aliases</li>
-</ol>
-<ul>
-<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
-<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><font color=#FF5733></font><br /></strong></p>
-<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
-<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
-<ol>
-<li>took:表示查询执行时长(单位是毫秒)</li>
-<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
-<li>_shards:分片的详情</li>
-<li>hits:查询的数据详情</li>
-<li>total:查询到的总数</li>
-</ol>
-<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
-<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
-</ul>
-<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>搭建MySql</title>
     <url>/2019/12/10/%E6%90%AD%E5%BB%BAMySql/</url>
     <content><![CDATA[<span id="more"></span>
@@ -221,7 +162,7 @@
       </tags>
   </entry>
   <entry>
-    <title>搭建Elasticsearch</title>
+    <title>搭建ElasticSearch</title>
     <url>/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch/</url>
     <content><![CDATA[<span id="more"></span>
 
@@ -249,6 +190,65 @@
 ]]></content>
       <tags>
         <tag>Environment build</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ElasticSearch常用的DSL脚本</title>
+    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<!--more!-->
+
+<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticsearch">搭建Elasticsearch</a></strong></li>
+</ul>
+<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
+<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
+<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
+<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
+<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
+
+<p>##Elasticsearch添加索引别名的好处以及操作</p>
+<ul>
+<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
+<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
+<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
+<li>给多个索引分组。</li>
+<li>给索引的一个子集创建视图。</li>
+</ol>
+</li>
+<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
+<li>单个索引操作: _alias</li>
+<li>多个索引操作: _aliases</li>
+</ol>
+<ul>
+<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
+<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><font color=#FF5733></font><br /></strong></p>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
+<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
+<ol>
+<li>took:表示查询执行时长(单位是毫秒)</li>
+<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
+<li>_shards:分片的详情</li>
+<li>hits:查询的数据详情</li>
+<li>total:查询到的总数</li>
+</ol>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
+<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
+</ul>
+<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Elasticsearch</tag>
       </tags>
   </entry>
 </search>
