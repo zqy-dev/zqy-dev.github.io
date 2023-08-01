@@ -200,8 +200,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="Go-Build不同系统下可执行文件"><a href="#Go-Build不同系统下可执行文件" class="headerlink" title="Go Build不同系统下可执行文件"></a>Go Build不同系统下可执行文件</h2><hr>
-<blockquote>
+                <blockquote>
 <p>Golang 支持在一个平台下生成另一个平台可执行程序的交叉编译功能。</p>
 </blockquote>
 <h3 id="Windows系统下build-Mac-Linux平台的64位可执行程序"><a href="#Windows系统下build-Mac-Linux平台的64位可执行程序" class="headerlink" title="Windows系统下build Mac, Linux平台的64位可执行程序"></a>Windows系统下build Mac, Linux平台的64位可执行程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET CGO_ENABLED=0SET GOOS=darwin3 SET GOARCH=amd64 go build main.go</span><br><span class="line">SET CGO_ENABLED=0 SET GOOS=linux SET GOARCH=amd64 go build  main.go</span><br></pre></td></tr></table></figure>
