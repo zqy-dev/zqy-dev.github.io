@@ -13,11 +13,11 @@
 
     <title>
         
-          Redis过期策略与淘汰策略 - Qiuyu的博客 | Qiuyu Blog
+          Mysql - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/2019/11/15/Redis过期策略与淘汰策略/">
+    <link rel="canonical" href="https://qyblog.fun/2023/07/27/Mysql/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -174,14 +174,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
+                          <a class="tag" href="/tags/#msql" title="msql">msql</a>
                         
                     </div>
-                    <h1>Redis过期策略与淘汰策略</h1>
+                    <h1>Mysql</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Qiuyu Zhang on
-                        2019-11-15
+                        2023-07-27
                     </span>
                 </div>
             </div>
@@ -200,35 +200,74 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <span id="more"></span>
-
-<h2 id="Redis过期策略"><a href="#Redis过期策略" class="headerlink" title="Redis过期策略"></a>Redis过期策略</h2><ul>
-<li><p><strong>我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！</strong></p>
-</li>
-<li><p><strong>过期策略有三种</strong></p>
-<ol>
-<li><strong>定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&amp;吞吐量</strong></li>
-<li><strong>惰性过期:只有当访问一个Key的时候,Redis才会去判断这个Key是否已经过期,如果过期就清除数据,这种策略可以最大化的减少cpu资源使用率,却对Memory不友好,如果有很多过期的Key一直不被访问,那就一直不会被清除,所以很占内存资源</strong></li>
-<li><strong>定期过期:每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。</strong><br><strong>(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。)</strong></li>
-</ol>
-</li>
+                <blockquote>
+<p>Mysql 知识积累</p>
+</blockquote>
+<h3 id="B树和B-树的区别"><a href="#B树和B-树的区别" class="headerlink" title="B树和B+树的区别"></a>B树和B+树的区别</h3><hr>
+<ul>
+<li>相同点：都有根节点和叶子节点，叶子节点都是有顺序的</li>
+<li>不同点:B+树在B树基础上叶子节点增加了双向指针,叶子节点上都冗余了一份根节点</li>
 </ul>
-<h2 id="Redis淘汰策略"><a href="#Redis淘汰策略" class="headerlink" title="Redis淘汰策略"></a>Redis淘汰策略</h2><ul>
-<li><p><strong>Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据</strong></p>
-</li>
-<li><p><strong>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。</strong></p>
-</li>
-<li><p><strong>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。</strong></p>
-</li>
+<h3 id="InnoDB与MyISAM区别"><a href="#InnoDB与MyISAM区别" class="headerlink" title="InnoDB与MyISAM区别"></a>InnoDB与MyISAM区别</h3><hr>
+<ul>
+<li>InnoDB支持事务,MyISAM不支持事务</li>
+<li>InnoDB支持行锁,MyISAM支持表锁</li>
+<li>InnoDB支持外键,MyISAM不支持</li>
+<li>InnoDB是聚集索引,MyISAM是非聚集索引</li>
 </ul>
+<h3 id="事务特性"><a href="#事务特性" class="headerlink" title="事务特性"></a>事务特性</h3><hr>
+<ul>
+<li>原子性</li>
+<li>一致性</li>
+<li>隔离型</li>
+<li>持久性</li>
+</ul>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><hr>
+<table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read Uncommitted</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Read Committed</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Repeatable Read</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>Serializable</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody></table>
+<ul>
+<li>读未提交(Read Uncommitted)容易产生脏读,不可重复读,幻读问题</li>
+<li>读已提交(Read Committed)容易产生不可重复读,幻读问题</li>
+<li>可重复读(Repeatable Read)是mysql默认的事务隔离级别机制，容易产生幻读问题但是innodb存储引擎除外</li>
+<li>串行化(Serializable)不会产生任何问题但是需要加读锁,会导致性能问题</li>
+<li>脏读指读取到其它事务未提交的数据</li>
+<li>不可重复读指并发更新时俩次查询相同数据与预期数据不一致</li>
+<li>幻读指并发新增删除时产生数量变化操作时,另一个事务前后查询数据不符合预期</li>
+</ul>
+<h3 id="Repeatable-Read事务隔离级别下InnoDB不会产生幻读的原因"><a href="#Repeatable-Read事务隔离级别下InnoDB不会产生幻读的原因" class="headerlink" title="Repeatable Read事务隔离级别下InnoDB不会产生幻读的原因"></a>Repeatable Read事务隔离级别下InnoDB不会产生幻读的原因</h3><hr>
+<p>未完待续</p>
 
 
                 <hr>
@@ -238,12 +277,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2019/12/05/搭建ZooKeeper集群/" data-toggle="tooltip" data-placement="top" title="搭建ZooKeeper集群">&larr; Previous Post</a>
+                            <a href="/2023/08/01/go-build可执行文件/" data-toggle="tooltip" data-placement="top" title="go-build可执行文件">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2019/11/06/Linux常用命令/" data-toggle="tooltip" data-placement="top" title="Linux常用命令">Next Post &rarr;</a>
+                            <a href="/2019/12/10/搭建MySql/" data-toggle="tooltip" data-placement="top" title="搭建MySql">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -270,7 +309,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
+                          <a class="tag" href="/tags/#msql" title="msql">msql</a>
                         
                     </div>
                 </section>

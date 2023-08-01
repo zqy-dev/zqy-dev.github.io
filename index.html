@@ -106,14 +106,14 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -193,6 +193,65 @@
 
 <div class="post-preview">
 
+    <a href="/2023/08/01/go-build可执行文件/">
+        <h2 class="post-title">
+            go-build可执行文件
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Go Build不同系统下可执行文件
+
+Golang 支持在一个平台下生成另一个平台可执行程序的交叉编译功能。
+
+Windows系统下build Mac, Linux平台的64位可执行程序12SET CGO_ENABLED=0SET GOOS=darwin3 SET GOARCH=amd64 go build main.goSET CGO_ENABLED=0 SET GOOS=linux S......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2023-08-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2023/07/27/Mysql/">
+        <h2 class="post-title">
+            Mysql
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+Mysql 知识积累
+
+B树和B+树的区别
+
+相同点：都有根节点和叶子节点，叶子节点都是有顺序的
+不同点:B+树在B树基础上叶子节点增加了双向指针,叶子节点上都冗余了一份根节点
+
+InnoDB与MyISAM区别
+
+InnoDB支持事务,MyISAM不支持事务
+InnoDB支持行锁,MyISAM支持表锁
+InnoDB支持外键,MyISAM不支持
+InnoDB是聚集索引,MyISAM是非聚集索......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2023-07-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/12/10/搭建MySql/">
         <h2 class="post-title">
             搭建MySql
@@ -209,7 +268,7 @@ Linux服务器搭建Mysql
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-12-10
     </p>
 
@@ -237,7 +296,7 @@ jdk下载
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-12-05
     </p>
 
@@ -265,7 +324,7 @@ Redis过期策略
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-11-15
     </p>
 
@@ -298,7 +357,7 @@ Linux常用命令
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-11-06
     </p>
 
@@ -324,7 +383,7 @@ Elasticsearch常用的DSL脚本
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-10-22
     </p>
 
@@ -355,7 +414,7 @@ Elasticsearch下载
         </div>
     </a>
     <p class="post-meta">
-        Posted by Zqy on
+        Posted by Qiuyu Zhang on
         2019-10-22
     </p>
 
@@ -397,9 +456,13 @@ Elasticsearch下载
                             
                         
                             
-                            <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
+                        
                             
                         
+                            
+                        
+                            
+                            <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
                             
                         
                     </div>

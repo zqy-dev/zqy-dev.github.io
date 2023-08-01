@@ -13,11 +13,11 @@
 
     <title>
         
-          Redis过期策略与淘汰策略 - Qiuyu的博客 | Qiuyu Blog
+          go-build可执行文件 - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/2019/11/15/Redis过期策略与淘汰策略/">
+    <link rel="canonical" href="https://qyblog.fun/2023/08/01/go-build可执行文件/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -174,14 +174,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
                         
                     </div>
-                    <h1>Redis过期策略与淘汰策略</h1>
+                    <h1>go-build可执行文件</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Qiuyu Zhang on
-                        2019-11-15
+                        2023-08-01
                     </span>
                 </div>
             </div>
@@ -200,35 +200,18 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <span id="more"></span>
+                <h2 id="Go-Build不同系统下可执行文件"><a href="#Go-Build不同系统下可执行文件" class="headerlink" title="Go Build不同系统下可执行文件"></a>Go Build不同系统下可执行文件</h2><hr>
+<blockquote>
+<p>Golang 支持在一个平台下生成另一个平台可执行程序的交叉编译功能。</p>
+</blockquote>
+<h3 id="Windows系统下build-Mac-Linux平台的64位可执行程序"><a href="#Windows系统下build-Mac-Linux平台的64位可执行程序" class="headerlink" title="Windows系统下build Mac, Linux平台的64位可执行程序"></a>Windows系统下build Mac, Linux平台的64位可执行程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET CGO_ENABLED=0SET GOOS=darwin3 SET GOARCH=amd64 go build main.go</span><br><span class="line">SET CGO_ENABLED=0 SET GOOS=linux SET GOARCH=amd64 go build  main.go</span><br></pre></td></tr></table></figure>
 
-<h2 id="Redis过期策略"><a href="#Redis过期策略" class="headerlink" title="Redis过期策略"></a>Redis过期策略</h2><ul>
-<li><p><strong>我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！</strong></p>
-</li>
-<li><p><strong>过期策略有三种</strong></p>
-<ol>
-<li><strong>定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&amp;吞吐量</strong></li>
-<li><strong>惰性过期:只有当访问一个Key的时候,Redis才会去判断这个Key是否已经过期,如果过期就清除数据,这种策略可以最大化的减少cpu资源使用率,却对Memory不友好,如果有很多过期的Key一直不被访问,那就一直不会被清除,所以很占内存资源</strong></li>
-<li><strong>定期过期:每隔一定的时间，会扫描一定数量的数据库的expires字典中一定数量的key，并清除其中已过期的key。该策略是前两者的一个折中方案。通过调整定时扫描的时间间隔和每次扫描的限定耗时，可以在不同情况下使得CPU和内存资源达到最优的平衡效果。</strong><br><strong>(expires字典会保存所有设置了过期时间的key的过期时间数据，其中，key是指向键空间中的某个键的指针，value是该键的毫秒精度的UNIX时间戳表示的过期时间。键空间是指该Redis集群中保存的所有键。)</strong></li>
-</ol>
-</li>
-</ul>
-<h2 id="Redis淘汰策略"><a href="#Redis淘汰策略" class="headerlink" title="Redis淘汰策略"></a>Redis淘汰策略</h2><ul>
-<li><p><strong>Redis的内存淘汰策略是指在Redis的用于缓存的内存不足时，怎么处理需要新写入且需要申请额外空间的数据</strong></p>
-</li>
-<li><p><strong>noeviction：当内存不足以容纳新写入数据时，新写入操作会报错。</strong></p>
-</li>
-<li><p><strong>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的key。</strong></p>
-</li>
-<li><p><strong>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个key。</strong></p>
-</li>
-<li><p><strong>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的key优先移除。</strong></p>
-</li>
-</ul>
+<h3 id="Mac下build-Linux-Windows平台的64位可执行程序"><a href="#Mac下build-Linux-Windows平台的64位可执行程序" class="headerlink" title="Mac下build Linux, Windows平台的64位可执行程序"></a>Mac下build Linux, Windows平台的64位可执行程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go</span><br><span class="line">CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build main.go</span><br></pre></td></tr></table></figure>
+
+<h3 id="Linux下build-Mac-Windows平台的64位可执行程序"><a href="#Linux下build-Mac-Windows平台的64位可执行程序" class="headerlink" title="Linux下build Mac, Windows平台的64位可执行程序"></a>Linux下build Mac, Windows平台的64位可执行程序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build main.go</span><br><span class="line">CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build main.go</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注:如果mac是m1芯片的设置GOARCH&#x3D;arm</strong><br><strong>GOOS：目标可执行程序运行操作系统，支持 darwin，freebsd，linux，windows</strong><br><strong>GOARCH：目标可执行程序操作系统构架，包括386，amd64，arm</strong></p>
+</blockquote>
 
 
                 <hr>
@@ -237,13 +220,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2019/12/05/搭建ZooKeeper集群/" data-toggle="tooltip" data-placement="top" title="搭建ZooKeeper集群">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2019/11/06/Linux常用命令/" data-toggle="tooltip" data-placement="top" title="Linux常用命令">Next Post &rarr;</a>
+                            <a href="/2023/07/27/Mysql/" data-toggle="tooltip" data-placement="top" title="Mysql">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -270,7 +249,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Redis" title="Redis">Redis</a>
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
                         
                     </div>
                 </section>
