@@ -13,11 +13,11 @@
 
     <title>
         
-          Qiuyu的博客 | Qiuyu Blog
+          Docker构建golang应用导入私有库依赖 - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/tags/Golang/">
+    <link rel="canonical" href="https://qyblog.fun/2023/08/02/Docker构建golang应用导入私有库依赖/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -156,7 +156,154 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://qyblog.fun/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Docker" title="Docker">Docker</a>
+                        
+                    </div>
+                    <h1>Docker构建golang应用导入私有库依赖</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Qiuyu Zhang on
+                        2023-08-02
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>由于在日常工作中开发,会设置私有库依赖,当Dockerfile执行时会报错这时候我们要在Dockerfile设置一下私有库git设置<br>以下内容本人采用ssh方式</p>
+</blockquote>
+<h3 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h3><hr>
+<ol>
+<li>把本地id_rsa文件添加到容器中Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD .ssh/ /root/.ssh/</span><br></pre></td></tr></table></figure></li>
+<li>设置go env Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ENV CGO_ENABLED 0 </span><br><span class="line">ENV GOPROXY https://goproxy.cn,direct</span><br><span class="line">ENV  GO111MODULE on</span><br></pre></td></tr></table></figure></li>
+<li>设置id_rsa文件权限Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN <span class="built_in">chmod</span> 0600 /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure></li>
+<li>设置go env私有库地址 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN go <span class="built_in">env</span> -w GOPRIVATE=github.com/<span class="variable">$&#123;your_name&#125;</span>/*</span><br></pre></td></tr></table></figure></li>
+<li>设置git 配置 以ssh方式连接 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RUN apk add --no-cache git ca-certificates</span><br><span class="line">RUN git config --global url.<span class="string">&quot;git@github.com:&quot;</span>.insteadOf https://github.com/</span><br></pre></td></tr></table></figure></li>
+<li>如果报错没有ssh命令 添加ssh命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN apk add --no-cache openssh-client </span><br></pre></td></tr></table></figure></li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/08/01/go-build可执行文件/" data-toggle="tooltip" data-placement="top" title="go-build可执行文件">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Docker" title="Docker">Docker</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
 
     <!-- Footer -->
     <!-- Footer -->

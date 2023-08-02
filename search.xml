@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker构建golang应用导入私有库依赖</title>
+    <url>/2023/08/02/Docker%E6%9E%84%E5%BB%BAgolang%E5%BA%94%E7%94%A8%E5%AF%BC%E5%85%A5%E7%A7%81%E6%9C%89%E5%BA%93%E4%BE%9D%E8%B5%96/</url>
+    <content><![CDATA[<blockquote>
+<p>由于在日常工作中开发,会设置私有库依赖,当Dockerfile执行时会报错这时候我们要在Dockerfile设置一下私有库git设置<br>以下内容本人采用ssh方式</p>
+</blockquote>
+<h3 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h3><hr>
+<ol>
+<li>把本地id_rsa文件添加到容器中Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ADD .ssh/ /root/.ssh/</span><br></pre></td></tr></table></figure></li>
+<li>设置go env Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ENV CGO_ENABLED 0 </span><br><span class="line">ENV GOPROXY https://goproxy.cn,direct</span><br><span class="line">ENV  GO111MODULE on</span><br></pre></td></tr></table></figure></li>
+<li>设置id_rsa文件权限Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN <span class="built_in">chmod</span> 0600 /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure></li>
+<li>设置go env私有库地址 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN go <span class="built_in">env</span> -w GOPRIVATE=github.com/<span class="variable">$&#123;your_name&#125;</span>/*</span><br></pre></td></tr></table></figure></li>
+<li>设置git 配置 以ssh方式连接 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache git ca-certificates</span><br><span class="line">RUN git config --global url.<span class="string">&quot;git@github.com:&quot;</span>.insteadOf https://github.com/</span><br></pre></td></tr></table></figure></li>
+<li>如果报错没有ssh命令 添加ssh命令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache openssh-client </span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Elasticsearch常用的DSL脚本</title>
     <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
     <content><![CDATA[<!--more!-->
@@ -57,6 +77,56 @@
 ]]></content>
       <tags>
         <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux常用命令</title>
+    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
+<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
+</ul>
+<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
+<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
+<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
+<li>查看系统磁盘空间的使用情况</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
+<p><strong>输出文件系统的 inodes 信息</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
+<li>显示文件或目录所占的磁盘空间</li>
+</ul>
+<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>显示当前目录大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
+<p><strong>显示当前目录下所有文件的大小</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
+<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
+<p><strong>设置时区</strong></p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
+<p><strong>安装ntpdate命令</strong></p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
+<p><strong>同步时间</strong></p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看时间是否同步成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -133,56 +203,6 @@
 ]]></content>
       <tags>
         <tag>msql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux常用命令</title>
-    <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><ul>
-<li><strong><font color=#FF5733>以下所有操作命令都是基于CentOS7</font><br /></strong></li>
-</ul>
-<h2 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h2><figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">firewall-cmd <span class="comment">--state</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">systemctl stop firewalld.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="禁止开机启动防火墙"><a href="#禁止开机启动防火墙" class="headerlink" title="禁止开机启动防火墙"></a>禁止开机启动防火墙</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">systemctl <span class="built_in">disable</span> firewalld.service </span><br></pre></td></tr></table></figure>
-
-<h2 id="关闭selinux"><a href="#关闭selinux" class="headerlink" title="关闭selinux"></a>关闭selinux</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">vi <span class="regexp">/etc/</span>selinux/config</span><br></pre></td></tr></table></figure>
-<p><strong>将SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled</strong></p>
-<h2 id="df命令"><a href="#df命令" class="headerlink" title="df命令"></a>df命令</h2><ul>
-<li>查看系统磁盘空间的使用情况</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-k 以 kB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-m 以 mB 为单位输出文件系统分区使用情况。</span></span><br><span class="line"><span class="deletion">-a 列出所有的文件系统分区，包含大小为 0 的文件系统分区。</span></span><br><span class="line"><span class="deletion">-i 列出文件系统分区的 inodes 信息。</span></span><br><span class="line"><span class="deletion">-T 显示磁盘分区的文件系统类型。</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>查看系统的分区使用情况，并显示文件系统的类型</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -hT</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看某个目录所在分区的磁盘使用情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -h <span class="built_in">test</span>/</span></span><br></pre></td></tr></table></figure>
-<p><strong>输出文件系统的 inodes 信息</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">df</span> -ih</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="du命令"><a href="#du命令" class="headerlink" title="du命令"></a>du命令</h2><ul>
-<li>显示文件或目录所占的磁盘空间</li>
-</ul>
-<p><strong>命令参数:</strong><br>    <figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-h 以容易理解的格式(给人看的格式)输出文件系统分区使用情况，例如 10kB、10MB、10GB 等。</span></span><br><span class="line"><span class="deletion">-s 显示文件或整个目录的大小，默认单位为 kB</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>显示当前目录大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs</span></span><br></pre></td></tr></table></figure>
-<p><strong>显示当前目录下所有文件的大小</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">du</span> -hs ./*</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="同步时间"><a href="#同步时间" class="headerlink" title="同步时间"></a>同步时间</h2><p><strong>查看当前时区</strong></p>
-<figure class="highlight coq"><table><tr><td class="code"><pre><span class="line">$ timedatectl status|<span class="type">grep</span> &#x27;<span class="keyword">Time</span> zone&#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>设置时区</strong></p>
-<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line">$ <span class="string">timedatectl</span> <span class="built_in">set-timezone</span> <span class="string">Asia</span>/<span class="string">Shanghai</span></span><br></pre></td></tr></table></figure>
-<p><strong>安装ntpdate命令</strong></p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">$ yum -y <span class="keyword">install</span> ntpdate</span><br></pre></td></tr></table></figure>
-<p><strong>同步时间</strong></p>
-<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">$ ntpdate -u  pool.ntp<span class="meta">.org</span></span><br></pre></td></tr></table></figure>
-<p><strong>查看时间是否同步成功</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -273,35 +293,6 @@
       </tags>
   </entry>
   <entry>
-    <title>搭建MySql</title>
-    <url>/2019/12/10/%E6%90%AD%E5%BB%BAMySql/</url>
-    <content><![CDATA[<span id="more"></span>
-
-<h2 id="Linux服务器搭建Mysql"><a href="#Linux服务器搭建Mysql" class="headerlink" title="Linux服务器搭建Mysql"></a>Linux服务器搭建Mysql</h2><ol>
-<li><strong>创建mysql用户组</strong><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo groupadd mysql</span></span><br><span class="line"><span class="attribute">sudo useradd -g mysql mysql</span></span><br></pre></td></tr></table></figure></li>
-<li><strong>创建mysql初始化目录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;instport&#125;</span>为新建的实例端口号，如<span class="number">3306</span></span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/lock</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/etc</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/log</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/pid</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/socket</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/tmp</span><br><span class="line">注意binlog和data目录放到数据盘：</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/binlog</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/data</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;etc中放入my.cnf配置文件</strong><br> <strong><a href="https://pan.baidu.com/s/1ZV79aXaEvjuCXDpP0YtA2Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>解压mysql安装包并创建软链接</strong><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">tar</span> -zxvf mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64.tar.gz -C 解压到指定目录</span><br><span class="line"><span class="attribute">ln</span> -s /解压路径/mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64 /home/mysql/base</span><br></pre></td></tr></table></figure></li>
-<li>修改用户组：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /home/mysql/</span><br><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /data1/mysql/</span><br></pre></td></tr></table></figure></li>
-<li>初始化mysql实例，以3306实例为例： <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysqld --defaults-file=/</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>etc/my.cnf --initialize</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意1：</font><br/></strong> <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">如果初始化时，出现如下报错：</span><br><span class="line"><span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysqld: error <span class="keyword">while</span> loading shared libraries: libaio.so.<span class="number">1</span>: cannot open shared object <span class="keyword">file</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">解决方法：</span><br><span class="line">sudo yum install -y libaio</span><br></pre></td></tr></table></figure>
- <strong><font color="#E74C3C">注意2：</font><br/></strong> <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">如果需要重新执行初始化命令，则需要先删掉数据目录下的所有内容，然后再执行初始化命令：</span><br><span class="line">sudo rm -rf <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/data/</span>*</span><br></pre></td></tr></table></figure></li>
-<li><strong>初始化后找到&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;log&#x2F;mysql-error.log输出的密码，用作root登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">找临时密码的方法：</span><br><span class="line">sudo cat <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/log/my</span>sql-error.log |grep <span class="string">&#x27;temporary password&#x27;</span></span><br><span class="line">找到如下内容：</span><br><span class="line">A temporary password is generated <span class="keyword">for</span> root@localhost: aXnUAxMil45d2</span><br><span class="line">密码为：aXnUAxMil45d2</span><br></pre></td></tr></table></figure></li>
-<li><strong>在&#x2F;home&#x2F;mysql下面增加mysql服务启动&#x2F;停止脚本</strong><br> <strong><a href="https://pan.baidu.com/s/1n-FQQinXLyQsQ2rhmuls-Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
-<li><strong>启动mysql服务：</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo -u mysql bash <span class="regexp">/home/my</span>sql/mysql.sh  -P <span class="variable">$&#123;instport&#125;</span> start</span><br></pre></td></tr></table></figure></li>
-<li><strong>临时登录mysql</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysql -h localhost -S /</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>socket/mysql.sock  -uroot -P<span class="variable">$&#123;instport&#125;</span> -p<span class="string">&#x27;aXnUAxMil45d2&#x27;</span></span><br></pre></td></tr></table></figure></li>
-<li><strong>登录后，首先修改mysql root默认密码及host：</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> PASSWORD <span class="keyword">FOR</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span><span class="operator">=</span><span class="string">&#x27;新密码&#x27;</span>; </span><br><span class="line">flush  privileges; </span><br></pre></td></tr></table></figure></li>
-<li><strong>执行 exit 退出,重新登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysql -h localhost -uroot -P<span class="variable">$&#123;instport&#125;</span> -pnewPassword</span><br></pre></td></tr></table></figure></li>
-<li><strong>修改支持主机ip方式连接</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> mysql.user <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> host<span class="operator">=</span><span class="string">&#x27;localhost&#x27;</span><span class="keyword">and</span> `<span class="keyword">user</span>`<span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<strong>执行exit退出,就可以使用本机Ip连接了,也可以使用Navicat远程连接</strong></li>
-</ol>
-<p><strong><font color="#E74C3C">至此！已经搭建完成,祝您工作愉快！！！</font><br/></strong></p>
-]]></content>
-      <tags>
-        <tag>Environment build</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>搭建ZooKeeper集群</title>
     <url>/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<span id="more"></span>
@@ -341,6 +332,35 @@
 </ol>
 </li>
 </ol>
+]]></content>
+      <tags>
+        <tag>Environment build</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建MySql</title>
+    <url>/2019/12/10/%E6%90%AD%E5%BB%BAMySql/</url>
+    <content><![CDATA[<span id="more"></span>
+
+<h2 id="Linux服务器搭建Mysql"><a href="#Linux服务器搭建Mysql" class="headerlink" title="Linux服务器搭建Mysql"></a>Linux服务器搭建Mysql</h2><ol>
+<li><strong>创建mysql用户组</strong><figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo groupadd mysql</span></span><br><span class="line"><span class="attribute">sudo useradd -g mysql mysql</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>创建mysql初始化目录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="variable">$&#123;instport&#125;</span>为新建的实例端口号，如<span class="number">3306</span></span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/lock</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/etc</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/log</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/pid</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/socket</span><br><span class="line">sudo mkdir -p <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/tmp</span><br><span class="line">注意binlog和data目录放到数据盘：</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/binlog</span><br><span class="line">sudo mkdir -p <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span>/data</span><br></pre></td></tr></table></figure></li>
+<li><strong>在&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;etc中放入my.cnf配置文件</strong><br> <strong><a href="https://pan.baidu.com/s/1ZV79aXaEvjuCXDpP0YtA2Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
+<li><strong>解压mysql安装包并创建软链接</strong><figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">tar</span> -zxvf mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64.tar.gz -C 解压到指定目录</span><br><span class="line"><span class="attribute">ln</span> -s /解压路径/mysql-<span class="number">5</span>.<span class="number">7</span>.<span class="number">28</span>-linux-glibc2.<span class="number">12</span>-x86_64 /home/mysql/base</span><br></pre></td></tr></table></figure></li>
+<li>修改用户组：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /home/mysql/</span><br><span class="line">sudo <span class="built_in">chown</span> -R mysql:mysql /data1/mysql/</span><br></pre></td></tr></table></figure></li>
+<li>初始化mysql实例，以3306实例为例： <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysqld --defaults-file=/</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>etc/my.cnf --initialize</span><br></pre></td></tr></table></figure>
+ <strong><font color="#E74C3C">注意1：</font><br/></strong> <figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line">如果初始化时，出现如下报错：</span><br><span class="line"><span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysqld: error <span class="keyword">while</span> loading shared libraries: libaio.so.<span class="number">1</span>: cannot open shared object <span class="keyword">file</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">解决方法：</span><br><span class="line">sudo yum install -y libaio</span><br></pre></td></tr></table></figure>
+ <strong><font color="#E74C3C">注意2：</font><br/></strong> <figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">如果需要重新执行初始化命令，则需要先删掉数据目录下的所有内容，然后再执行初始化命令：</span><br><span class="line">sudo rm -rf <span class="regexp">/data1/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/data/</span>*</span><br></pre></td></tr></table></figure></li>
+<li><strong>初始化后找到&#x2F;home&#x2F;mysql&#x2F;multi&#x2F;${instport}&#x2F;log&#x2F;mysql-error.log输出的密码，用作root登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">找临时密码的方法：</span><br><span class="line">sudo cat <span class="regexp">/home/my</span>sql<span class="regexp">/multi/</span><span class="variable">$&#123;instport&#125;</span><span class="regexp">/log/my</span>sql-error.log |grep <span class="string">&#x27;temporary password&#x27;</span></span><br><span class="line">找到如下内容：</span><br><span class="line">A temporary password is generated <span class="keyword">for</span> root@localhost: aXnUAxMil45d2</span><br><span class="line">密码为：aXnUAxMil45d2</span><br></pre></td></tr></table></figure></li>
+<li><strong>在&#x2F;home&#x2F;mysql下面增加mysql服务启动&#x2F;停止脚本</strong><br> <strong><a href="https://pan.baidu.com/s/1n-FQQinXLyQsQ2rhmuls-Q"><font color="#1326C8">拿走不谢</font><br/></a></strong></li>
+<li><strong>启动mysql服务：</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo -u mysql bash <span class="regexp">/home/my</span>sql/mysql.sh  -P <span class="variable">$&#123;instport&#125;</span> start</span><br></pre></td></tr></table></figure></li>
+<li><strong>临时登录mysql</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin<span class="regexp">/mysql -h localhost -S /</span>home<span class="regexp">/mysql/mu</span>lti<span class="regexp">/$&#123;instport&#125;/</span>socket/mysql.sock  -uroot -P<span class="variable">$&#123;instport&#125;</span> -p<span class="string">&#x27;aXnUAxMil45d2&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>登录后，首先修改mysql root默认密码及host：</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> PASSWORD <span class="keyword">FOR</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span><span class="operator">=</span><span class="string">&#x27;新密码&#x27;</span>; </span><br><span class="line">flush  privileges; </span><br></pre></td></tr></table></figure></li>
+<li><strong>执行 exit 退出,重新登录</strong><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo <span class="regexp">/home/my</span>sql<span class="regexp">/base/</span>bin/mysql -h localhost -uroot -P<span class="variable">$&#123;instport&#125;</span> -pnewPassword</span><br></pre></td></tr></table></figure></li>
+<li><strong>修改支持主机ip方式连接</strong><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">update</span> mysql.user <span class="keyword">set</span> host<span class="operator">=</span><span class="string">&#x27;%&#x27;</span> <span class="keyword">where</span> host<span class="operator">=</span><span class="string">&#x27;localhost&#x27;</span><span class="keyword">and</span> `<span class="keyword">user</span>`<span class="operator">=</span><span class="string">&#x27;root&#x27;</span>;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<strong>执行exit退出,就可以使用本机Ip连接了,也可以使用Navicat远程连接</strong></li>
+</ol>
+<p><strong><font color="#E74C3C">至此！已经搭建完成,祝您工作愉快！！！</font><br/></strong></p>
 ]]></content>
       <tags>
         <tag>Environment build</tag>
