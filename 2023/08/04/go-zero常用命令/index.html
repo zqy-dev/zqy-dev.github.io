@@ -13,11 +13,11 @@
 
     <title>
         
-          Qiuyu的博客 | Qiuyu Blog
+          go-zero常用命令 - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/tags/Redis/">
+    <link rel="canonical" href="https://qyblog.fun/2023/08/04/go-zero常用命令/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -156,7 +156,183 @@
 
 
     <!-- Main Content -->
-    <!-- Default Archive layout, we use archives instead. -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://qyblog.fun/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
+                        
+                    </div>
+                    <h1>go-zero常用命令</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Qiuyu Zhang on
+                        2023-08-04
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>go-zero 是一个集成了各种工程实践的 web 和 rpc 框架。通过弹性设计保障了大并发服务端的稳定性，经受了充分的实战检验。<br>go-zero 包含极简的 API 定义和生成工具 goctl，可以根据定义的 api 文件一键生成 Go, iOS, Android, Kotlin, Dart, TypeScript, JavaScript 代码，并可直接运行。<br><a target="_blank" rel="noopener" href="https://go-zero.dev/docs/tasks/installation/goctl">goctl安装</a></p>
+</blockquote>
+<h2 id="goctl命令"><a href="#goctl命令" class="headerlink" title="goctl命令"></a>goctl命令</h2><hr>
+<!-- TOC -->
+<ul>
+<li><a href="#goctl%E5%91%BD%E4%BB%A4">goctl命令</a><ul>
+<li><a href="#goctl-api-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl api 生成go代码命令</a></li>
+<li><a href="#goctl-%E7%94%9F%E6%88%90dockerfile%E5%91%BD%E4%BB%A4">goctl 生成dockerfile命令</a></li>
+<li><a href="#goctl-grpc-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl grpc 生成go代码命令</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-api-生成go代码命令"><a href="#goctl-api-生成go代码命令" class="headerlink" title="goctl api 生成go代码命令"></a>goctl api 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl api go -api <span class="variable">$&#123;your_file.api&#125;</span> -<span class="built_in">dir</span> ./ --style=goZero --home <span class="variable">$&#123;your_template&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数详解<ul>
+<li>-api 自行编写的api文件 <a target="_blank" rel="noopener" href="https://go-zero.dev/docs/tasks/dsl/api">语法参考</a></li>
+<li>-dir 生成代码存放的路径</li>
+<li>–style 生成代码文件命名风格,这里使用驼峰风格</li>
+<li>–home 指定自定义模版(如果没有可以不写这个参数,使用默认),想自定义模版可以参考<a target="_blank" rel="noopener" href="https://go-zero.dev/docs/tutorials/customization/template">模版定制化</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-生成dockerfile命令"><a href="#goctl-生成dockerfile命令" class="headerlink" title="goctl 生成dockerfile命令"></a>goctl 生成dockerfile命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">goctl docker --go main.go --exe main</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数详解<ul>
+<li>–go 主函数启动项</li>
+<li>–exe 可执行文件名称一般与主函数文件名字相同</li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-grpc-生成go代码命令"><a href="#goctl-grpc-生成go代码命令" class="headerlink" title="goctl grpc 生成go代码命令"></a>goctl grpc 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=. -m</span><br><span class="line"><span class="comment"># 不分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=.</span><br><span class="line"><span class="comment"># proto文件引用第三方文件</span></span><br><span class="line">goctl rpc protoc \</span><br><span class="line"> -I /Users/qy/go/src/github.com/gogo/protobuf/gogoproto/ \</span><br><span class="line"> --go_out=./pb \</span><br><span class="line"> --go-grpc_out=./pb \</span><br><span class="line"> -I ./pb/ \</span><br><span class="line"> ./pb/attachment.proto \</span><br><span class="line"> --zrpc_out=.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分组生成效果参考<a target="_blank" rel="noopener" href="https://go-zero.dev/docs/tutorials/proto/services/group">服务分组</a></li>
+<li>参数详解<ul>
+<li>–go_out 是protoc里面指令参数，表示生成go文件存放路径</li>
+<li>–go-grpc_out 是protoc里面指令参数，表示生成go_grpc文件存放路径</li>
+<li>–zrpc_out 是goctl rpc protoc指令参数,表示生成代码文件存放路径</li>
+</ul>
+</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2023/08/03/Docker命令/" data-toggle="tooltip" data-placement="top" title="Docker命令">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Golang" title="Golang">Golang</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
 
     <!-- Footer -->
     <!-- Footer -->
