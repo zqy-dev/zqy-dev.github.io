@@ -99,6 +99,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -107,13 +114,6 @@
                         
                         <li>
                             <a href="/archives/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -193,6 +193,59 @@
 
 <div class="post-preview">
 
+    <a href="/2023/08/16/学习Docker/">
+        <h2 class="post-title">
+            学习Docker
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+记录学习Docker过程知识点
+
+Docker为什么比VM快？
+Docker有着比VN更少的抽象层
+Docker使用的是宿主机的内核，VM使用的Guest OS所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核
+
+...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2023-08-16
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2023/08/15/Go切片自动扩容机制/">
+        <h2 class="post-title">
+            Go Slice自动扩容机制
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+以下内容仅个人理解整理，仅供参考
+
+
+在go1.18版本之后(含1.18)go slice append相比之前版本growslice函数已经发生变化,在Go 1.18 Release Notes中提到The built-in function append now uses a slightly different formula when deciding how much to gr......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2023-08-15
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2023/08/04/go-zero常用命令/">
         <h2 class="post-title">
             go-zero常用命令
@@ -237,13 +290,9 @@ Docker build 命令
 Docker run 命令
 Docker image
 
-Docker build 命令
-
-docker build 命令用于使用Dockerfile创建镜像
-
-创建镜像1docker build -t $&#123;image_name&#125;:$&#123;tag_name&#125; .
-
-Docker r......
+帮助命令123docker version    # docker版本信息docker info       # docker系统信息，包括镜像和容器数量docker 命令 --hlep # docker 命令 帮助 
+命令文档地址
+镜像命令容器命令Docke......
         </div>
     </a>
     <p class="post-meta">
@@ -420,65 +469,6 @@ Redis过期策略
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/11/06/Linux常用命令/">
-        <h2 class="post-title">
-            Linux常用命令
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-Linux常用命令
-以下所有操作命令都是基于CentOS7
-
-查看防火墙状态1firewall-cmd --state
-
-关闭防火墙1systemctl stop firewalld.service
-
-禁止开机启动防火墙1systemctl disable firewalld.service 
-
-关闭selinux1vi /etc/selinux/config
-将SELINUX&#x3D......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Qiuyu Zhang on
-        2019-11-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/10/22/ElasticSearch常用的DSL脚本/">
-        <h2 class="post-title">
-            Elasticsearch常用的DSL脚本
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-Elasticsearch常用的DSL脚本
-以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看搭建Elasticsearch
-
-新建索引1234567891011121314151617181920212223put http://localhost:9200/my_index_v1    &#123;      ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Qiuyu Zhang on
-        2019-10-22
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -514,23 +504,23 @@ Elasticsearch常用的DSL脚本
                     <div class="tags">
                         
                             
-                            <a href="/tags/#Docker" title="Docker" rel="2">Docker</a>
+                            <a href="/tags/#Docker" title="Docker" rel="3">Docker</a>
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Golang" title="Golang" rel="3">Golang</a>
                             
                         
                             
                         
                             
                         
-                            
-                        
-                            
-                            <a href="/tags/#Golang" title="Golang" rel="2">Golang</a>
                             
                         
                             
                             <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
-                            
-                        
                             
                         
                     </div>
@@ -687,7 +677,7 @@ Elasticsearch常用的DSL脚本
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Qiuyu Blog 2023 
+                    Copyright &copy; Qiuyu Blog 2024 
                     <br>
 <!--                     Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> -->
                     <span style="display: inline-block; margin: 0 5px;">

@@ -99,6 +99,13 @@
 
                         
                         <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -107,13 +114,6 @@
                         
                         <li>
                             <a href="/archives/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -212,11 +212,13 @@
 <li><a href="#docker-run-%E5%91%BD%E4%BB%A4">Docker run 命令</a></li>
 <li><a href="#docker-image">Docker image</a><!-- TOC --></li>
 </ul>
-<h2 id="Docker-build-命令"><a href="#Docker-build-命令" class="headerlink" title="Docker build 命令"></a>Docker build 命令</h2><hr>
+<h2 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker version    # docker版本信息</span><br><span class="line">docker info       # docker系统信息，包括镜像和容器数量</span><br><span class="line">docker 命令 --hlep # docker 命令 帮助 </span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/reference/">命令文档地址</a></p>
+<h2 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h2><h2 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a>容器命令</h2><h2 id="Docker-build-命令"><a href="#Docker-build-命令" class="headerlink" title="Docker build 命令"></a>Docker build 命令</h2><hr>
 <blockquote>
 <p>docker build 命令用于使用Dockerfile创建镜像</p>
 </blockquote>
-<h3 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t <span class="variable">$&#123;image_name&#125;</span>:<span class="variable">$&#123;tag_name&#125;</span> .</span><br></pre></td></tr></table></figure>
+<h3 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t $&#123;image_name&#125;:$&#123;tag_name&#125; .</span><br></pre></td></tr></table></figure>
 
 <h2 id="Docker-run-命令"><a href="#Docker-run-命令" class="headerlink" title="Docker run 命令"></a>Docker run 命令</h2><hr>
 <blockquote>
@@ -425,7 +427,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Qiuyu Blog 2023 
+                    Copyright &copy; Qiuyu Blog 2024 
                     <br>
 <!--                     Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> -->
                     <span style="display: inline-block; margin: 0 5px;">
