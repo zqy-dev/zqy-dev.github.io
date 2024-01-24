@@ -13,11 +13,11 @@
 
     <title>
         
-          学习Docker - Qiuyu的博客 | Qiuyu Blog
+          Etcd - Qiuyu的博客 | Qiuyu Blog
         
     </title>
 
-    <link rel="canonical" href="https://qyblog.fun/2023/08/16/学习Docker/">
+    <link rel="canonical" href="https://qyblog.fun/2024/01/24/etcd/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -164,7 +164,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/img/home_bg.jpg')
+        background-image: url('/img/etcd_bg.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -174,14 +174,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Docker" title="Docker">Docker</a>
+                          <a class="tag" href="/tags/#Etcd" title="Etcd">Etcd</a>
                         
                     </div>
-                    <h1>学习Docker</h1>
+                    <h1>Etcd</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by Qiuyu Zhang on
-                        2023-08-16
+                        2024-01-24
                     </span>
                 </div>
             </div>
@@ -200,13 +200,16 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <blockquote>
-<p>记录学习Docker过程知识点</p>
-</blockquote>
-<h3 id="Docker为什么比VM快？"><a href="#Docker为什么比VM快？" class="headerlink" title="Docker为什么比VM快？"></a>Docker为什么比VM快？</h3><ol>
-<li>Docker有着比VN更少的抽象层</li>
-<li>Docker使用的是宿主机的内核，VM使用的Guest OS<br><img src="/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/Docker_VM%E5%AF%B9%E6%AF%94%E5%9B%BE.png"><br>所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核</li>
-</ol>
+                <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><hr>
+<h3 id="查看rpc已注册的rpc服务"><a href="#查看rpc已注册的rpc服务" class="headerlink" title="查看rpc已注册的rpc服务"></a>查看rpc已注册的rpc服务</h3><ul>
+<li><p>如果你的服务使用的前缀是&#x2F;services&#x2F;grpc&#x2F;，你可以这样查询:</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix --keys-only <span class="comment">#这个命令会列出所有以/services/grpc/为前缀的键，这通常包含了注册的服务信息。</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果你想要查看键的值（通常包含服务的地址和端口），可以移除–keys-only选项</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你在编程中需要查询etcd中的gRPC服务信息，可以使用相应的etcd客户端库。以下是使用Go语言etcd客户端库的一个简单例子：</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">    <span class="string">&quot;go.etcd.io/etcd/client/v3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">        Endpoints:   []<span class="type">string</span>&#123;<span class="string">&quot;localhost:2379&quot;</span>&#125;,</span><br><span class="line">        DialTimeout: <span class="number">5</span> * time.Second,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> cli.Close()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Replace with the appropriate prefix used by your services</span></span><br><span class="line">    servicePrefix := <span class="string">&quot;/services/grpc/&quot;</span></span><br><span class="line"></span><br><span class="line">    resp, err := cli.Get(context.Background(), servicePrefix, clientv3.WithPrefix())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, kv := <span class="keyword">range</span> resp.Kvs &#123;</span><br><span class="line">        log.Printf(<span class="string">&quot;key: %s, value: %s\n&quot;</span>, kv.Key, kv.Value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
 
 
                 <hr>
@@ -215,13 +218,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2024/01/24/etcd/" data-toggle="tooltip" data-placement="top" title="Etcd">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2023/08/15/Go切片自动扩容机制/" data-toggle="tooltip" data-placement="top" title="Go Slice自动扩容机制">Next Post &rarr;</a>
+                            <a href="/2023/08/16/学习Docker/" data-toggle="tooltip" data-placement="top" title="学习Docker">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -248,7 +247,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Docker" title="Docker">Docker</a>
+                          <a class="tag" href="/tags/#Etcd" title="Etcd">Etcd</a>
                         
                     </div>
                 </section>

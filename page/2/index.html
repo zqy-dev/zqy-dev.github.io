@@ -92,6 +92,12 @@
                     
 
                         
+                    
+
+                        
+                    
+
+                        
                         <li>
                             <a href="/about/">About</a>
                         </li>
@@ -99,21 +105,15 @@
                     
 
                         
-                    
-
-                        
-                    
-
-                        
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -190,6 +190,34 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2019/11/15/Redis过期策略与淘汰策略/">
+        <h2 class="post-title">
+            Redis过期策略与淘汰策略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+
+Redis过期策略
+我们都知道redis是K&#x2F;V存储的形式,我们可以设置K的过期时间,过期策略也就是说当K过期了,Redis将如何处理！
+
+过期策略有三种
+
+定时过期:每个设置过期时间的Key,都会创建一个定时器,当Key过期时间到了,Redis会立即删除过期数据,这一点对于Memory来讲还是很友好的;但是会占用大量的CPU资源去处理过期的数据,从而影响Cache的响应时间&......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2019-11-15
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -330,9 +358,11 @@ Elasticsearch下载
                             
                         
                             
-                            <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
+                        
                             
                         
+                            
+                            <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
                             
                         
                     </div>
