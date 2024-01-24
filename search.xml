@@ -93,92 +93,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Elasticsearch常用的DSL脚本</title>
-    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<!--more!-->
-
-<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
-</ul>
-<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
-<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
-<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
-<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
-<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
-
-<p>##Elasticsearch添加索引别名的好处以及操作</p>
-<ul>
-<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
-<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
-<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
-<li>给多个索引分组。</li>
-<li>给索引的一个子集创建视图。</li>
-</ol>
-</li>
-<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
-<li>单个索引操作: _alias</li>
-<li>多个索引操作: _aliases</li>
-</ol>
-<ul>
-<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
-<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><font color=#FF5733></font><br /></strong></p>
-<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
-<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
-<ol>
-<li>took:表示查询执行时长(单位是毫秒)</li>
-<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
-<li>_shards:分片的详情</li>
-<li>hits:查询的数据详情</li>
-<li>total:查询到的总数</li>
-</ol>
-<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
-<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
-</ul>
-<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go Slice自动扩容机制</title>
-    <url>/2023/08/15/Go%E5%88%87%E7%89%87%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<blockquote>
-<p>以下内容仅个人理解整理，仅供参考</p>
-</blockquote>
-<blockquote>
-<p>在go1.18版本之后(含1.18)go slice append相比之前版本growslice函数已经发生变化,<br>在<a href="https://tip.golang.org/doc/go1.18#runtime">Go 1.18 Release Notes</a>中提到<br>The built-in function append now uses a slightly different formula when deciding how much to grow a slice when it must allocate a new underlying array. The new formula is less prone to sudden transitions in allocation behavior.</p>
-</blockquote>
-<blockquote>
-<p>以下是1.18中runtime.growslice函数实现，只截取主要代码</p>
-</blockquote>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> threshold = <span class="number">256</span></span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; threshold &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				<span class="comment">// Transition from growing 2x for small slices</span></span><br><span class="line">				<span class="comment">// to growing 1.25x for large slices. This formula</span></span><br><span class="line">				<span class="comment">// gives a smooth-ish transition between the two.</span></span><br><span class="line">				newcap += (newcap + <span class="number">3</span>*threshold) / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>以下是1.17版本runtime.growslice函数实现</p>
-</blockquote>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				newcap += newcap / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>可以看出在 Go 1.18 中，扩容策略 (不考虑内存对齐的情况下) 变成了：<br>如果期望容量大于当前容量的两倍就会使用期望容量<br>如果当前切片的长度小于 256 就会将容量翻倍<br>如果当前切片的长度大于 256 就会每次增加 25% 的同时再增加 192(256 的 3&#x2F;4)，直到新容量大于期望容量<br>按照注释的说法是新的公式 newcap +&#x3D; (newcap + 3*threshold) &#x2F; 4 会使得容量的变化更加平滑。<br>我们可以看到1.17版本采用的公式是而且临界值是1024 newcap +&#x3D; newcap &#x2F; 4</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux常用命令</title>
     <url>/2019/11/06/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<span id="more"></span>
@@ -226,6 +140,33 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">date</span></span></span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go Slice自动扩容机制</title>
+    <url>/2023/08/15/Go%E5%88%87%E7%89%87%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<blockquote>
+<p>以下内容仅个人理解整理，仅供参考</p>
+</blockquote>
+<blockquote>
+<p>在go1.18版本之后(含1.18)go slice append相比之前版本growslice函数已经发生变化,<br>在<a href="https://tip.golang.org/doc/go1.18#runtime">Go 1.18 Release Notes</a>中提到<br>The built-in function append now uses a slightly different formula when deciding how much to grow a slice when it must allocate a new underlying array. The new formula is less prone to sudden transitions in allocation behavior.</p>
+</blockquote>
+<blockquote>
+<p>以下是1.18中runtime.growslice函数实现，只截取主要代码</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> threshold = <span class="number">256</span></span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; threshold &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				<span class="comment">// Transition from growing 2x for small slices</span></span><br><span class="line">				<span class="comment">// to growing 1.25x for large slices. This formula</span></span><br><span class="line">				<span class="comment">// gives a smooth-ish transition between the two.</span></span><br><span class="line">				newcap += (newcap + <span class="number">3</span>*threshold) / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>以下是1.17版本runtime.growslice函数实现</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				newcap += newcap / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以看出在 Go 1.18 中，扩容策略 (不考虑内存对齐的情况下) 变成了：<br>如果期望容量大于当前容量的两倍就会使用期望容量<br>如果当前切片的长度小于 256 就会将容量翻倍<br>如果当前切片的长度大于 256 就会每次增加 25% 的同时再增加 192(256 的 3&#x2F;4)，直到新容量大于期望容量<br>按照注释的说法是新的公式 newcap +&#x3D; (newcap + 3*threshold) &#x2F; 4 会使得容量的变化更加平滑。<br>我们可以看到1.17版本采用的公式是而且临界值是1024 newcap +&#x3D; newcap &#x2F; 4</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Golang</tag>
       </tags>
   </entry>
   <entry>
@@ -305,6 +246,24 @@
       </tags>
   </entry>
   <entry>
+    <title>Etcd</title>
+    <url>/2024/01/24/etcd/</url>
+    <content><![CDATA[<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><hr>
+<h3 id="查看rpc已注册的rpc服务"><a href="#查看rpc已注册的rpc服务" class="headerlink" title="查看rpc已注册的rpc服务"></a>查看rpc已注册的rpc服务</h3><ul>
+<li><p>如果你的服务使用的前缀是&#x2F;services&#x2F;grpc&#x2F;，你可以这样查询:</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix --keys-only <span class="comment">#这个命令会列出所有以/services/grpc/为前缀的键，这通常包含了注册的服务信息。</span></span><br></pre></td></tr></table></figure></li>
+<li><p>如果你想要查看键的值（通常包含服务的地址和端口），可以移除–keys-only选项</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果你在编程中需要查询etcd中的gRPC服务信息，可以使用相应的etcd客户端库。以下是使用Go语言etcd客户端库的一个简单例子：</p>
+  <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">    <span class="string">&quot;go.etcd.io/etcd/client/v3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">        Endpoints:   []<span class="type">string</span>&#123;<span class="string">&quot;localhost:2379&quot;</span>&#125;,</span><br><span class="line">        DialTimeout: <span class="number">5</span> * time.Second,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> cli.Close()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Replace with the appropriate prefix used by your services</span></span><br><span class="line">    servicePrefix := <span class="string">&quot;/services/grpc/&quot;</span></span><br><span class="line"></span><br><span class="line">    resp, err := cli.Get(context.Background(), servicePrefix, clientv3.WithPrefix())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, kv := <span class="keyword">range</span> resp.Kvs &#123;</span><br><span class="line">        log.Printf(<span class="string">&quot;key: %s, value: %s\n&quot;</span>, kv.Key, kv.Value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Etcd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis过期策略与淘汰策略</title>
     <url>/2019/11/15/Redis%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5%E4%B8%8E%E6%B7%98%E6%B1%B0%E7%AD%96%E7%95%A5/</url>
     <content><![CDATA[<span id="more"></span>
@@ -361,85 +320,62 @@
       </tags>
   </entry>
   <entry>
-    <title>go-zero常用命令</title>
-    <url>/2023/08/04/go-zero%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<blockquote>
-<p>go-zero 是一个集成了各种工程实践的 web 和 rpc 框架。通过弹性设计保障了大并发服务端的稳定性，经受了充分的实战检验。<br>go-zero 包含极简的 API 定义和生成工具 goctl，可以根据定义的 api 文件一键生成 Go, iOS, Android, Kotlin, Dart, TypeScript, JavaScript 代码，并可直接运行。<br><a href="https://go-zero.dev/docs/tasks/installation/goctl">goctl安装</a></p>
-</blockquote>
-<h2 id="goctl命令"><a href="#goctl命令" class="headerlink" title="goctl命令"></a>goctl命令</h2><hr>
-<!-- TOC -->
+    <title>Elasticsearch常用的DSL脚本</title>
+    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<!--more!-->
+
+<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
+</ul>
+<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
+<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
+<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
+<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
+<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
+
+<p>##Elasticsearch添加索引别名的好处以及操作</p>
 <ul>
-<li><a href="#goctl%E5%91%BD%E4%BB%A4">goctl命令</a><ul>
-<li><a href="#goctl-api-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl api 生成go代码命令</a></li>
-<li><a href="#goctl-%E7%94%9F%E6%88%90dockerfile%E5%91%BD%E4%BB%A4">goctl 生成dockerfile命令</a></li>
-<li><a href="#goctl-grpc-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl grpc 生成go代码命令</a><!-- TOC --></li>
-</ul>
-</li>
-</ul>
-<h3 id="goctl-api-生成go代码命令"><a href="#goctl-api-生成go代码命令" class="headerlink" title="goctl api 生成go代码命令"></a>goctl api 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">goctl api go -api <span class="variable">$&#123;your_file.api&#125;</span> -<span class="built_in">dir</span> ./ --style=goZero --home <span class="variable">$&#123;your_template&#125;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>参数详解<ul>
-<li>-api 自行编写的api文件 <a href="https://go-zero.dev/docs/tasks/dsl/api">语法参考</a></li>
-<li>-dir 生成代码存放的路径</li>
-<li>–style 生成代码文件命名风格,这里使用驼峰风格</li>
-<li>–home 指定自定义模版(如果没有可以不写这个参数,使用默认),想自定义模版可以参考<a href="https://go-zero.dev/docs/tutorials/customization/template">模版定制化</a></li>
-</ul>
-</li>
-</ul>
-<h3 id="goctl-生成dockerfile命令"><a href="#goctl-生成dockerfile命令" class="headerlink" title="goctl 生成dockerfile命令"></a>goctl 生成dockerfile命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">goctl docker --go main.go --exe main</span><br></pre></td></tr></table></figure>
-<ul>
-<li>参数详解<ul>
-<li>–go 主函数启动项</li>
-<li>–exe 可执行文件名称一般与主函数文件名字相同</li>
-</ul>
-</li>
-</ul>
-<h3 id="goctl-grpc-生成go代码命令"><a href="#goctl-grpc-生成go代码命令" class="headerlink" title="goctl grpc 生成go代码命令"></a>goctl grpc 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=. -m</span><br><span class="line"><span class="comment"># 不分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=.</span><br><span class="line"><span class="comment"># proto文件引用第三方文件</span></span><br><span class="line">goctl rpc protoc \</span><br><span class="line"> -I /Users/qy/go/src/github.com/gogo/protobuf/gogoproto/ \</span><br><span class="line"> --go_out=./pb \</span><br><span class="line"> --go-grpc_out=./pb \</span><br><span class="line"> -I ./pb/ \</span><br><span class="line"> ./pb/attachment.proto \</span><br><span class="line"> --zrpc_out=.</span><br></pre></td></tr></table></figure>
-<ul>
-<li>分组生成效果参考<a href="https://go-zero.dev/docs/tutorials/proto/services/group">服务分组</a></li>
-<li>参数详解<ul>
-<li>–go_out 是protoc里面指令参数，表示生成go文件存放路径</li>
-<li>–go-grpc_out 是protoc里面指令参数，表示生成go_grpc文件存放路径</li>
-<li>–zrpc_out 是goctl rpc protoc指令参数,表示生成代码文件存放路径</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Golang</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>学习Docker</title>
-    <url>/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/</url>
-    <content><![CDATA[<blockquote>
-<p>记录学习Docker过程知识点</p>
-</blockquote>
-<h3 id="Docker为什么比VM快？"><a href="#Docker为什么比VM快？" class="headerlink" title="Docker为什么比VM快？"></a>Docker为什么比VM快？</h3><ol>
-<li>Docker有着比VN更少的抽象层</li>
-<li>Docker使用的是宿主机的内核，VM使用的Guest OS<br><img src="/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/Docker_VM%E5%AF%B9%E6%AF%94%E5%9B%BE.png"><br>所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核</li>
+<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
+<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
+<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
+<li>给多个索引分组。</li>
+<li>给索引的一个子集创建视图。</li>
 </ol>
-]]></content>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Etcd</title>
-    <url>/2024/01/24/etcd/</url>
-    <content><![CDATA[<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><hr>
-<h3 id="查看rpc已注册的rpc服务"><a href="#查看rpc已注册的rpc服务" class="headerlink" title="查看rpc已注册的rpc服务"></a>查看rpc已注册的rpc服务</h3><ul>
-<li><p>如果你的服务使用的前缀是&#x2F;services&#x2F;grpc&#x2F;，你可以这样查询:</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix --keys-only <span class="comment">#这个命令会列出所有以/services/grpc/为前缀的键，这通常包含了注册的服务信息。</span></span><br></pre></td></tr></table></figure></li>
-<li><p>如果你想要查看键的值（通常包含服务的地址和端口），可以移除–keys-only选项</p>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">etcdctl get /services/grpc/ --prefix</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>如果你在编程中需要查询etcd中的gRPC服务信息，可以使用相应的etcd客户端库。以下是使用Go语言etcd客户端库的一个简单例子：</p>
-  <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;log&quot;</span></span><br><span class="line">    <span class="string">&quot;go.etcd.io/etcd/client/v3&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    cli, err := clientv3.New(clientv3.Config&#123;</span><br><span class="line">        Endpoints:   []<span class="type">string</span>&#123;<span class="string">&quot;localhost:2379&quot;</span>&#125;,</span><br><span class="line">        DialTimeout: <span class="number">5</span> * time.Second,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">defer</span> cli.Close()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Replace with the appropriate prefix used by your services</span></span><br><span class="line">    servicePrefix := <span class="string">&quot;/services/grpc/&quot;</span></span><br><span class="line"></span><br><span class="line">    resp, err := cli.Get(context.Background(), servicePrefix, clientv3.WithPrefix())</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        log.Fatal(err)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, kv := <span class="keyword">range</span> resp.Kvs &#123;</span><br><span class="line">        log.Printf(<span class="string">&quot;key: %s, value: %s\n&quot;</span>, kv.Key, kv.Value)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
+<li>单个索引操作: _alias</li>
+<li>多个索引操作: _aliases</li>
+</ol>
+<ul>
+<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
 </ul>
+</li>
+</ul>
+<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
+<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><font color=#FF5733></font><br /></strong></p>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
+<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
+<ol>
+<li>took:表示查询执行时长(单位是毫秒)</li>
+<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
+<li>_shards:分片的详情</li>
+<li>hits:查询的数据详情</li>
+<li>total:查询到的总数</li>
+</ol>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
+<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
+</ul>
+<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
-        <tag>Etcd</tag>
+        <tag>Elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -545,6 +481,70 @@
 ]]></content>
       <tags>
         <tag>Environment build</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习Docker</title>
+    <url>/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/</url>
+    <content><![CDATA[<blockquote>
+<p>记录学习Docker过程知识点</p>
+</blockquote>
+<h3 id="Docker为什么比VM快？"><a href="#Docker为什么比VM快？" class="headerlink" title="Docker为什么比VM快？"></a>Docker为什么比VM快？</h3><ol>
+<li>Docker有着比VN更少的抽象层</li>
+<li>Docker使用的是宿主机的内核，VM使用的Guest OS<br><img src="/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/Docker_VM%E5%AF%B9%E6%AF%94%E5%9B%BE.png"><br>所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go-zero常用命令</title>
+    <url>/2023/08/04/go-zero%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<blockquote>
+<p>go-zero 是一个集成了各种工程实践的 web 和 rpc 框架。通过弹性设计保障了大并发服务端的稳定性，经受了充分的实战检验。<br>go-zero 包含极简的 API 定义和生成工具 goctl，可以根据定义的 api 文件一键生成 Go, iOS, Android, Kotlin, Dart, TypeScript, JavaScript 代码，并可直接运行。<br><a href="https://go-zero.dev/docs/tasks/installation/goctl">goctl安装</a></p>
+</blockquote>
+<h2 id="goctl命令"><a href="#goctl命令" class="headerlink" title="goctl命令"></a>goctl命令</h2><hr>
+<!-- TOC -->
+<ul>
+<li><a href="#goctl%E5%91%BD%E4%BB%A4">goctl命令</a><ul>
+<li><a href="#goctl-api-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl api 生成go代码命令</a></li>
+<li><a href="#goctl-%E7%94%9F%E6%88%90dockerfile%E5%91%BD%E4%BB%A4">goctl 生成dockerfile命令</a></li>
+<li><a href="#goctl-grpc-%E7%94%9F%E6%88%90go%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4">goctl grpc 生成go代码命令</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-api-生成go代码命令"><a href="#goctl-api-生成go代码命令" class="headerlink" title="goctl api 生成go代码命令"></a>goctl api 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">goctl api go -api <span class="variable">$&#123;your_file.api&#125;</span> -<span class="built_in">dir</span> ./ --style=goZero --home <span class="variable">$&#123;your_template&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数详解<ul>
+<li>-api 自行编写的api文件 <a href="https://go-zero.dev/docs/tasks/dsl/api">语法参考</a></li>
+<li>-dir 生成代码存放的路径</li>
+<li>–style 生成代码文件命名风格,这里使用驼峰风格</li>
+<li>–home 指定自定义模版(如果没有可以不写这个参数,使用默认),想自定义模版可以参考<a href="https://go-zero.dev/docs/tutorials/customization/template">模版定制化</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-生成dockerfile命令"><a href="#goctl-生成dockerfile命令" class="headerlink" title="goctl 生成dockerfile命令"></a>goctl 生成dockerfile命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">goctl docker --go main.go --exe main</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参数详解<ul>
+<li>–go 主函数启动项</li>
+<li>–exe 可执行文件名称一般与主函数文件名字相同</li>
+</ul>
+</li>
+</ul>
+<h3 id="goctl-grpc-生成go代码命令"><a href="#goctl-grpc-生成go代码命令" class="headerlink" title="goctl grpc 生成go代码命令"></a>goctl grpc 生成go代码命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=. -m</span><br><span class="line"><span class="comment"># 不分组</span></span><br><span class="line">goctl rpc  protoc ./pb/test.proto --go_out=./pb --go-grpc_out=./pb --zrpc_out=.</span><br><span class="line"><span class="comment"># proto文件引用第三方文件</span></span><br><span class="line">goctl rpc protoc \</span><br><span class="line"> -I /Users/qy/go/src/github.com/gogo/protobuf/gogoproto/ \</span><br><span class="line"> --go_out=./pb \</span><br><span class="line"> --go-grpc_out=./pb \</span><br><span class="line"> -I ./pb/ \</span><br><span class="line"> ./pb/attachment.proto \</span><br><span class="line"> --zrpc_out=.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分组生成效果参考<a href="https://go-zero.dev/docs/tutorials/proto/services/group">服务分组</a></li>
+<li>参数详解<ul>
+<li>–go_out 是protoc里面指令参数，表示生成go文件存放路径</li>
+<li>–go-grpc_out 是protoc里面指令参数，表示生成go_grpc文件存放路径</li>
+<li>–zrpc_out 是goctl rpc protoc指令参数,表示生成代码文件存放路径</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Golang</tag>
       </tags>
   </entry>
 </search>
