@@ -99,13 +99,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -114,6 +107,13 @@
                         
                         <li>
                             <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -190,6 +190,61 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2024/02/22/golang中的map/">
+        <h2 class="post-title">
+            golang中的map
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Map扩容机制
+Go 语言中的 map 是一个动态哈希表，它会根据元素的数量和当前容量自动进行扩容。扩容的目的是为了保持哈希表的性能，防止因为桶（bucket）过多的元素导致的性能下降。以下是Go语言 map 扩容的基本过程：
+
+
+初始化： 当你第一次向 map 中插入数据时，map 会被分配一个初始容量。这个初始容量是一系列预定义大小中的一个，具体取决于 map 的实现和版本。
+
+触发扩容......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2024-02-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2024/02/01/数据结构/">
+        <h2 class="post-title">
+            数据结构
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+记录学习笔记
+
+数组
+定义：需要⼀块连续的内存空间来存储
+
+思考？为什么数组下标从0开始？
+从数组存储的内存模型上来看，“下标”最确切的定义应该是“偏移 （offset）”。前⾯也讲到，如果⽤a来表⽰数组的⾸地址，a[0]就是偏 移为0的位置，也就是⾸地址，a[k]就表⽰偏移k个type_size的位置， 所以计算a[k]的内存地址只需要⽤这个公式：a[k]_address &#x3D; ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Qiuyu Zhang on
+        2024-02-01
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -413,59 +468,6 @@ InnoDB是聚集索引,MyISAM是非聚集索......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/12/10/搭建MySql/">
-        <h2 class="post-title">
-            搭建MySql
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-Linux服务器搭建Mysql
-创建mysql用户组12sudo groupadd mysqlsudo useradd -g mysql mysql
-创建mysql初始化目录12345678910$&#123;instport&#125;为新建的实例端口号，如3306sudo mkdir -p /home/mysql/multi/$&#123;instport&#125;/locksud......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Qiuyu Zhang on
-        2019-12-10
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/12/05/搭建ZooKeeper集群/">
-        <h2 class="post-title">
-            搭建ZooKeeper集群
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-
-服务器搭建ZooKeeper集群
-jdk下载
-
-
-下载完成后解压tar包1tar -zxvf jdk.tar -C 解压到指定目录
-配置环境变量1234echo &#x27;export JAVA_HOME=jdk解压路径&#x27; | sudo tee -a /etc/profileecho &#x27;export PATH=$PATH:$JAVA_HOME/bin&#x27; |......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Qiuyu Zhang on
-        2019-12-05
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -505,9 +507,9 @@ jdk下载
                             
                         
                             
-                        
+                            <a href="/tags/#Golang" title="Golang" rel="4">Golang</a>
                             
-                            <a href="/tags/#Golang" title="Golang" rel="3">Golang</a>
+                        
                             
                         
                             
@@ -520,6 +522,8 @@ jdk下载
                         
                             
                             <a href="/tags/#Environment build" title="Environment build" rel="3">Environment build</a>
+                            
+                        
                             
                         
                     </div>

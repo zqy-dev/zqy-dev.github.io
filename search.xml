@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Docker构建golang应用导入私有库依赖</title>
+    <url>/2023/08/02/Docker%E6%9E%84%E5%BB%BAgolang%E5%BA%94%E7%94%A8%E5%AF%BC%E5%85%A5%E7%A7%81%E6%9C%89%E5%BA%93%E4%BE%9D%E8%B5%96/</url>
+    <content><![CDATA[<blockquote>
+<p>由于在日常工作中开发,会设置私有库依赖,当Dockerfile执行时会报错这时候我们要在Dockerfile设置一下私有库git设置<br>以下内容本人采用ssh方式</p>
+</blockquote>
+<h3 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h3><hr>
+<ol>
+<li>把本地id_rsa文件添加到容器中Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ADD .ssh/ /root/.ssh/</span><br></pre></td></tr></table></figure></li>
+<li>设置go env Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ENV CGO_ENABLED 0 </span><br><span class="line">ENV GOPROXY https://goproxy.cn,direct</span><br><span class="line">ENV  GO111MODULE on</span><br></pre></td></tr></table></figure></li>
+<li>设置id_rsa文件权限Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN <span class="built_in">chmod</span> 0600 /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure></li>
+<li>设置go env私有库地址 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN go <span class="built_in">env</span> -w GOPRIVATE=github.com/<span class="variable">$&#123;your_name&#125;</span>/*</span><br></pre></td></tr></table></figure></li>
+<li>设置git 配置 以ssh方式连接 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache git ca-certificates</span><br><span class="line">RUN git config --global url.<span class="string">&quot;git@github.com:&quot;</span>.insteadOf https://github.com/</span><br></pre></td></tr></table></figure></li>
+<li>如果报错没有ssh命令 添加ssh命令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache openssh-client </span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Go Slice自动扩容机制</title>
+    <url>/2023/08/15/Go%E5%88%87%E7%89%87%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<blockquote>
+<p>以下内容仅个人理解整理，仅供参考</p>
+</blockquote>
+<blockquote>
+<p>在go1.18版本之后(含1.18)go slice append相比之前版本growslice函数已经发生变化,<br>在<a href="https://tip.golang.org/doc/go1.18#runtime">Go 1.18 Release Notes</a>中提到<br>The built-in function append now uses a slightly different formula when deciding how much to grow a slice when it must allocate a new underlying array. The new formula is less prone to sudden transitions in allocation behavior.</p>
+</blockquote>
+<blockquote>
+<p>以下是1.18中runtime.growslice函数实现，只截取主要代码</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> threshold = <span class="number">256</span></span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; threshold &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				<span class="comment">// Transition from growing 2x for small slices</span></span><br><span class="line">				<span class="comment">// to growing 1.25x for large slices. This formula</span></span><br><span class="line">				<span class="comment">// gives a smooth-ish transition between the two.</span></span><br><span class="line">				newcap += (newcap + <span class="number">3</span>*threshold) / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>以下是1.17版本runtime.growslice函数实现</p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				newcap += newcap / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以看出在 Go 1.18 中，扩容策略 (不考虑内存对齐的情况下) 变成了：<br>如果期望容量大于当前容量的两倍就会使用期望容量<br>如果当前切片的长度小于 256 就会将容量翻倍<br>如果当前切片的长度大于 256 就会每次增加 25% 的同时再增加 192(256 的 3&#x2F;4)，直到新容量大于期望容量<br>按照注释的说法是新的公式 newcap +&#x3D; (newcap + 3*threshold) &#x2F; 4 会使得容量的变化更加平滑。<br>我们可以看到1.17版本采用的公式是而且临界值是1024 newcap +&#x3D; newcap &#x2F; 4</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Golang</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Docker命令</title>
     <url>/2023/08/03/Docker%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<blockquote>
@@ -70,112 +117,6 @@
 ]]></content>
       <tags>
         <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Docker构建golang应用导入私有库依赖</title>
-    <url>/2023/08/02/Docker%E6%9E%84%E5%BB%BAgolang%E5%BA%94%E7%94%A8%E5%AF%BC%E5%85%A5%E7%A7%81%E6%9C%89%E5%BA%93%E4%BE%9D%E8%B5%96/</url>
-    <content><![CDATA[<blockquote>
-<p>由于在日常工作中开发,会设置私有库依赖,当Dockerfile执行时会报错这时候我们要在Dockerfile设置一下私有库git设置<br>以下内容本人采用ssh方式</p>
-</blockquote>
-<h3 id="详细步骤"><a href="#详细步骤" class="headerlink" title="详细步骤"></a>详细步骤</h3><hr>
-<ol>
-<li>把本地id_rsa文件添加到容器中Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ADD .ssh/ /root/.ssh/</span><br></pre></td></tr></table></figure></li>
-<li>设置go env Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ENV CGO_ENABLED 0 </span><br><span class="line">ENV GOPROXY https://goproxy.cn,direct</span><br><span class="line">ENV  GO111MODULE on</span><br></pre></td></tr></table></figure></li>
-<li>设置id_rsa文件权限Dockerfile中添加如下指令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN <span class="built_in">chmod</span> 0600 /root/.ssh/id_rsa</span><br></pre></td></tr></table></figure></li>
-<li>设置go env私有库地址 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN go <span class="built_in">env</span> -w GOPRIVATE=github.com/<span class="variable">$&#123;your_name&#125;</span>/*</span><br></pre></td></tr></table></figure></li>
-<li>设置git 配置 以ssh方式连接 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache git ca-certificates</span><br><span class="line">RUN git config --global url.<span class="string">&quot;git@github.com:&quot;</span>.insteadOf https://github.com/</span><br></pre></td></tr></table></figure></li>
-<li>如果报错没有ssh命令 添加ssh命令 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">RUN apk add --no-cache openssh-client </span><br></pre></td></tr></table></figure></li>
-</ol>
-]]></content>
-      <tags>
-        <tag>Docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Elasticsearch常用的DSL脚本</title>
-    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<!--more!-->
-
-<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
-<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
-</ul>
-<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
-<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
-<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
-<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
-<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
-
-<p>##Elasticsearch添加索引别名的好处以及操作</p>
-<ul>
-<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
-<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
-<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
-<li>给多个索引分组。</li>
-<li>给索引的一个子集创建视图。</li>
-</ol>
-</li>
-<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
-<li>单个索引操作: _alias</li>
-<li>多个索引操作: _aliases</li>
-</ol>
-<ul>
-<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
-<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong><font color=#FF5733></font><br /></strong></p>
-<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
-<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
-<ol>
-<li>took:表示查询执行时长(单位是毫秒)</li>
-<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
-<li>_shards:分片的详情</li>
-<li>hits:查询的数据详情</li>
-<li>total:查询到的总数</li>
-</ol>
-<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
-<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
-</ul>
-<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Elasticsearch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Go Slice自动扩容机制</title>
-    <url>/2023/08/15/Go%E5%88%87%E7%89%87%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6/</url>
-    <content><![CDATA[<blockquote>
-<p>以下内容仅个人理解整理，仅供参考</p>
-</blockquote>
-<blockquote>
-<p>在go1.18版本之后(含1.18)go slice append相比之前版本growslice函数已经发生变化,<br>在<a href="https://tip.golang.org/doc/go1.18#runtime">Go 1.18 Release Notes</a>中提到<br>The built-in function append now uses a slightly different formula when deciding how much to grow a slice when it must allocate a new underlying array. The new formula is less prone to sudden transitions in allocation behavior.</p>
-</blockquote>
-<blockquote>
-<p>以下是1.18中runtime.growslice函数实现，只截取主要代码</p>
-</blockquote>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> threshold = <span class="number">256</span></span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; threshold &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				<span class="comment">// Transition from growing 2x for small slices</span></span><br><span class="line">				<span class="comment">// to growing 1.25x for large slices. This formula</span></span><br><span class="line">				<span class="comment">// gives a smooth-ish transition between the two.</span></span><br><span class="line">				newcap += (newcap + <span class="number">3</span>*threshold) / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>以下是1.17版本runtime.growslice函数实现</p>
-</blockquote>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="type">int</span>)</span></span> slice &#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">cap</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				newcap += newcap / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>可以看出在 Go 1.18 中，扩容策略 (不考虑内存对齐的情况下) 变成了：<br>如果期望容量大于当前容量的两倍就会使用期望容量<br>如果当前切片的长度小于 256 就会将容量翻倍<br>如果当前切片的长度大于 256 就会每次增加 25% 的同时再增加 192(256 的 3&#x2F;4)，直到新容量大于期望容量<br>按照注释的说法是新的公式 newcap +&#x3D; (newcap + 3*threshold) &#x2F; 4 会使得容量的变化更加平滑。<br>我们可以看到1.17版本采用的公式是而且临界值是1024 newcap +&#x3D; newcap &#x2F; 4</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Golang</tag>
       </tags>
   </entry>
   <entry>
@@ -342,6 +283,65 @@
       </tags>
   </entry>
   <entry>
+    <title>Elasticsearch常用的DSL脚本</title>
+    <url>/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<!--more!-->
+
+<h1 id="Elasticsearch常用的DSL脚本"><a href="#Elasticsearch常用的DSL脚本" class="headerlink" title="Elasticsearch常用的DSL脚本"></a>Elasticsearch常用的DSL脚本</h1><ul>
+<li><strong><font color=#FF5733>以下所有脚本执行都是使用Elasticsearch可视化工具Elasticsearch-head执行的,如果没有安装可以查看</font><br /><a href="/2019/10/22/%E6%90%AD%E5%BB%BAElasticSearch">搭建Elasticsearch</a></strong></li>
+</ul>
+<h2 id="新建索引"><a href="#新建索引" class="headerlink" title="新建索引"></a>新建索引</h2><figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">put http:<span class="comment">//localhost:9200/my_index_v1</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;settings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;refresh_interval&quot;</span>: <span class="string">&quot;60s&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_shards&quot;</span>: <span class="string">&quot;10&quot;</span>,</span><br><span class="line">          <span class="string">&quot;number_of_replicas&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;my_index&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;dynamic&quot;</span>: <span class="string">&quot;strict&quot;</span>,</span><br><span class="line">          <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;name&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&quot;gender&quot;</span>: &#123;</span><br><span class="line">              <span class="string">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%BB%BA%E7%B4%A2%E5%BC%95.png"></p>
+<h2 id="索引增加别名"><a href="#索引增加别名" class="headerlink" title="索引增加别名"></a>索引增加别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/my_index</span><br></pre></td></tr></table></figure>
+<h2 id="查询索引别名"><a href="#查询索引别名" class="headerlink" title="查询索引别名"></a>查询索引别名</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_alias/</span><br></pre></td></tr></table></figure>
+<p><strong>查询结果如图所示</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%9F%A5%E8%AF%A2%E7%B4%A2%E5%BC%95%E5%88%AB%E5%90%8D.png"></p>
+<h2 id="查看别名指向了哪些索引"><a href="#查看别名指向了哪些索引" class="headerlink" title="查看别名指向了哪些索引"></a>查看别名指向了哪些索引</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">get http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/_alias/my</span>_index</span><br></pre></td></tr></table></figure>
+
+<p>##Elasticsearch添加索引别名的好处以及操作</p>
+<ul>
+<li>索引别名就像一个快捷方式或软连接，可以指向一个或多个索引，也可以给任何一个需要索引名的API来使用，而且别名不能与索引同名。</li>
+<li>别名带给我们极大的灵活性，允许我们做下面这些：<ol>
+<li>在运行的集群中可以无缝的从一个索引切换到另一个索引。</li>
+<li>给多个索引分组。</li>
+<li>给索引的一个子集创建视图。</li>
+</ol>
+</li>
+<li>修改别名指向新的索引,(当数据已经迁移到新的索引时候可以让别名执行新的索引,下面例子是从my_index_v1升级到my_index_v2的操作)<br>*. Elasticsearch索引别名管理支持单个索引操作也支持多个索引操作<ol>
+<li>单个索引操作: _alias</li>
+<li>多个索引操作: _aliases</li>
+</ol>
+<ul>
+<li>下面命令使用的是多个索引操作,删除my_index_v1的别名,在my_index_v2上面新建这个别名<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost<span class="regexp">/_aliases/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;actions&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;remove&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v1&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;add&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;index&quot;</span>: <span class="string">&quot;my_index_v2&quot;</span>,</span><br><span class="line">        <span class="string">&quot;alias&quot;</span>: <span class="string">&quot;my_index&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<strong><font color=#FF5733>Es的查询是基于索引别名来查询的,所以我们在完成数据迁移之后,只需要把原始的索引别名指向新的索引就可以实现零停机升级索引了</font><br /></strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="原始mapping里面增加字段"><a href="#原始mapping里面增加字段" class="headerlink" title="原始mapping里面增加字段"></a>原始mapping里面增加字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;age&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如果所示增加成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%96%B0%E5%A2%9E%E5%AD%97%E6%AE%B5.png"></p>
+<h2 id="mapping新增时间字段"><a href="#mapping新增时间字段" class="headerlink" title="mapping新增时间字段"></a>mapping新增时间字段</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">put http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_mapping/my_index</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;dynamic_date_formats&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;yyyy-MM-dd&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yyyy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;yy-MM-ddHH: mm: ss&quot;</span>,</span><br><span class="line">    <span class="string">&quot;date_optional_time&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;createTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;updateTime&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;type&quot;</span>: <span class="string">&quot;long&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><font color=#FF5733></font><br /></strong></p>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/my</span>_index</span><br><span class="line"> &#123;</span><br><span class="line">   <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span>,</span><br><span class="line">   <span class="string">&quot;gender&quot;</span>: <span class="string">&quot;male&quot;</span>,</span><br><span class="line">   <span class="string">&quot;age&quot;</span>: <span class="number">20</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如图所示添加数据成功</strong><br><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E6%B7%BB%E5%8A%A0%E6%95%B0%E6%8D%AE.png"></p>
+<h2 id="查询全部数据"><a href="#查询全部数据" class="headerlink" title="查询全部数据"></a>查询全部数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_search</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match_all&quot;</span>: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/match_all.png"></p>
+<ol>
+<li>took:表示查询执行时长(单位是毫秒)</li>
+<li>time_out:查询是否超时:如果是true证明查询超时,<font color=#FF5733>【注】超时不代表此次查询操作就会直接终止，es其实后台还在继续执行</font><br /></li>
+<li>_shards:分片的详情</li>
+<li>hits:查询的数据详情</li>
+<li>total:查询到的总数</li>
+</ol>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><ul>
+<li><font color=#FF5733>分页查询正常情况下我们使用的是如下DSL脚本,但是这种脚本有一个坑,Elasticsearch本身有一个限制,当from大于等于10000的时候就会报错</font><br /><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: &#123;</span><br><span class="line">        &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;<span class="selector-tag">from</span>&quot;: <span class="number">0</span>,</span><br><span class="line">  <span class="string">&quot;size&quot;</span>: <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/10/22/ElasticSearch%E5%B8%B8%E7%94%A8%E7%9A%84DSL%E8%84%9A%E6%9C%AC/%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2%E5%BC%82%E5%B8%B8.png"></li>
+</ul>
+<h2 id="删除符合条件下的所有数据"><a href="#删除符合条件下的所有数据" class="headerlink" title="删除符合条件下的所有数据"></a>删除符合条件下的所有数据</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">post http:<span class="regexp">//</span>localhost:<span class="number">9200</span><span class="regexp">/my_index_v1/</span>_delete_by_query</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;query&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;bool&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;must&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;match&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;name&quot;</span>: <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>Elasticsearch</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Etcd</title>
     <url>/2024/01/24/etcd/</url>
     <content><![CDATA[<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><hr>
@@ -428,18 +428,50 @@
       </tags>
   </entry>
   <entry>
-    <title>学习Docker</title>
-    <url>/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/</url>
-    <content><![CDATA[<blockquote>
-<p>记录学习Docker过程知识点</p>
+    <title>golang中的map</title>
+    <url>/2024/02/22/golang%E4%B8%AD%E7%9A%84map/</url>
+    <content><![CDATA[<h3 id="Map扩容机制"><a href="#Map扩容机制" class="headerlink" title="Map扩容机制"></a>Map扩容机制</h3><blockquote>
+<p>Go 语言中的 map 是一个动态哈希表，它会根据元素的数量和当前容量自动进行扩容。扩容的目的是为了保持哈希表的性能，防止因为桶（bucket）过多的元素导致的性能下降。以下是Go语言 map 扩容的基本过程：</p>
 </blockquote>
-<h3 id="Docker为什么比VM快？"><a href="#Docker为什么比VM快？" class="headerlink" title="Docker为什么比VM快？"></a>Docker为什么比VM快？</h3><ol>
-<li>Docker有着比VN更少的抽象层</li>
-<li>Docker使用的是宿主机的内核，VM使用的Guest OS<br><img src="/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/Docker_VM%E5%AF%B9%E6%AF%94%E5%9B%BE.png"><br>所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核</li>
+<ol>
+<li><p>初始化： 当你第一次向 map 中插入数据时，map 会被分配一个初始容量。这个初始容量是一系列预定义大小中的一个，具体取决于 map 的实现和版本。</p>
+</li>
+<li><p>触发扩容：<br>当 map 中的元素数量达到一定的阈值，即负载因子（通常是元素数量和桶数量的比值）超过一个特定的限度时，就会触发扩容。这个限度不是固定的，它可能会根据 map 的实现细节而有所不同。</p>
+</li>
+<li><p>分配更多的桶：<br>在扩容时，map 会分配更多的桶。通常情况下，新的桶数量是原来的两倍，这样可以保持负载因子在一个合理的范围内。</p>
+</li>
+<li><p>重新哈希：<br>扩容后，map 中的所有现有元素都需要被重新哈希到新的桶中。这个过程称为重新哈希（rehashing）。在重新哈希的过程中，每个元素的哈希值会被重新计算，以确定它在新的桶数组中的位置。</p>
+</li>
+<li><p>渐进式扩容：<br>Go 语言的 map 实现了一种渐进式扩容机制。在这个机制下，扩容操作会分布在随后的多次写操作中进行，而不是一次性完成。这样做的目的是为了避免长时间的停顿。当一个新的键值对被插入时，一部分现有的元素会被移动到新的桶中。这个过程会持续到所有元素都移动完毕。</p>
+</li>
+<li><p>动态调整：<br>如果 map 的使用减少，元素被大量删除，map 并不会自动缩小其大小。但是，可以通过手动重新创建一个较小的 map 并将元素复制过去的方式来减少内存使用。</p>
+</li>
 </ol>
+<blockquote>
+<p>在 Go 语言中，map 的这些行为是完全自动化的，开发者通常不需要关心这些底层细节。不过，了解这些机制对于编写性能敏感的应用是有益的，因为扩容操作可能会影响性能，尤其是在大型 map 结构中。预先知道 map 的大致大小并在创建时指定初始容量，可以减少扩容次数，从而提高性能。</p>
+</blockquote>
+<h3 id="解决hash冲突"><a href="#解决hash冲突" class="headerlink" title="解决hash冲突"></a>解决hash冲突</h3><blockquote>
+<p>Go 语言的 map 是一种内置的数据类型，它使用哈希表来实现。在哈希表中，hash 冲突是一个常见的问题，它发生在不同的键通过哈希函数计算得到相同的哈希值时。Go 语言的 map 在内部使用了一些策略来解决这种冲突：</p>
+</blockquote>
+<ol>
+<li><p>开放寻址（Open Addressing）：<br>在这种方法中，当一个键的哈希位置已经被占用时，map 会尝试在表中找到另一个空闲的位置。Go 语言的 map 实现中并不直接使用这种技术，但是它使用了一个类似的方法，即在发生冲突时会在哈希桶中寻找空闲位置。</p>
+</li>
+<li><p>链表法（Separate Chaining）：<br>Go 的 map 实际上使用的是一种改进的链表法。每个哈希桶可以存储一个固定数量的键值对（目前是 8 个，但这个值可能会随着 Go 语言版本的不同而变化）。如果一个桶已经满了，它会链接到一个额外的溢出桶，这些溢出桶可以动态地分配空间来存储更多的键值对。</p>
+</li>
+<li><p>再哈希（Rehashing）：<br>当 map 的负载因子（即键值对总数与哈希桶数量的比例）变得太高时，会触发再哈希过程。在这个过程中，map 会创建一个更大的哈希表，并重新计算每个键的哈希位置，将所有的键值对移动到新的哈希表中。这样可以减少冲突并保持操作的效率。</p>
+</li>
+<li><p>动态扩容：<br>随着键值对的增加，Go 的 map 会动态地增加哈希桶的数量，这样可以分散键值对，减少冲突。</p>
+</li>
+</ol>
+<blockquote>
+<p>Go 语言的 map 是并发不安全的，如果需要在多个 goroutine 中并发访问 map，则应该使用互斥锁（sync.Mutex）或者读写互斥锁（sync.RWMutex）来保证安全性。另外，Go 语言还提供了 sync.Map，它是一个支持并发安全读写的 map 类型。</p>
+</blockquote>
+<blockquote>
+<p>Go 的 map 实现是高效的，它的设计允许在大多数情况下实现常数时间的操作性能。不过，需要注意的是，由于 map 的动态扩容特性，当发生扩容时会有性能损耗，因此在使用时应该尽量预估 map 的大小，避免频繁的扩容操作。</p>
+</blockquote>
 ]]></content>
       <tags>
-        <tag>Docker</tag>
+        <tag>Golang</tag>
       </tags>
   </entry>
   <entry>
@@ -503,6 +535,21 @@
       </tags>
   </entry>
   <entry>
+    <title>学习Docker</title>
+    <url>/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/</url>
+    <content><![CDATA[<blockquote>
+<p>记录学习Docker过程知识点</p>
+</blockquote>
+<h3 id="Docker为什么比VM快？"><a href="#Docker为什么比VM快？" class="headerlink" title="Docker为什么比VM快？"></a>Docker为什么比VM快？</h3><ol>
+<li>Docker有着比VN更少的抽象层</li>
+<li>Docker使用的是宿主机的内核，VM使用的Guest OS<br><img src="/2023/08/16/%E5%AD%A6%E4%B9%A0Docker/Docker_VM%E5%AF%B9%E6%AF%94%E5%9B%BE.png"><br>所以说，当新建一个容器时候Docker不需要像VM一样重新加载一个操作系统内核</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建ZooKeeper集群</title>
     <url>/2019/12/05/%E6%90%AD%E5%BB%BAZooKeeper%E9%9B%86%E7%BE%A4/</url>
     <content><![CDATA[<span id="more"></span>
@@ -545,6 +592,32 @@
 ]]></content>
       <tags>
         <tag>Environment build</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构</title>
+    <url>/2024/02/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<blockquote>
+<p>记录学习笔记</p>
+</blockquote>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><blockquote>
+<p>定义：需要⼀块连续的内存空间来存储</p>
+</blockquote>
+<h3 id="思考？为什么数组下标从0开始？"><a href="#思考？为什么数组下标从0开始？" class="headerlink" title="思考？为什么数组下标从0开始？"></a>思考？为什么数组下标从0开始？</h3><blockquote>
+<p>从数组存储的内存模型上来看，“下标”最确切的定义应该是“偏移 （offset）”。前⾯也讲到，如果⽤a来表⽰数组的⾸地址，a[0]就是偏 移为0的位置，也就是⾸地址，a[k]就表⽰偏移k个type_size的位置， 所以计算a[k]的内存地址只需要⽤这个公式：<br>a[k]_address &#x3D; base_address + k * type_size<br>但是，如果数组从1开始计数，那我们计算数组元素a[k]的内存地址就 会变为：<br>a[k]_address &#x3D; base_address + (k-1)*type_size<br>对⽐两个公式，我们不难发现，从1开始编号，每次随机访问数组元素 都多了⼀次减法运算，对于CPU来说，就是多了⼀次减法指令。 数组作为⾮常基础的数据结构，通过下标随机访问数组元素⼜是其⾮ 常基础的编程操作，效率的优化就要尽可能做到极致。所以为了减少 ⼀次减法操作，数组选择了从0开始编号，⽽不是从1开始</p>
+</blockquote>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><blockquote>
+<p>插入删除O(n)<br>随机访问O(1)</p>
+</blockquote>
+<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><blockquote>
+<p>定义：通过指针将一组零散的内存块串联起来</p>
+</blockquote>
+<h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><blockquote>
+<p>插入删除O(1)<br>随机访问O(n)</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>数据结构</tag>
       </tags>
   </entry>
 </search>
